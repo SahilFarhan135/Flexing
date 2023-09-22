@@ -16,10 +16,22 @@ class MyPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
       ),
       margin: const EdgeInsets.all(0.0),
       child: Container(
+        decoration:  const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Colors.white,
+              Colors.black12,
+              Color(0xFF434343),
+              Color(0xFF000000),
+            ],
+          ),
+        ),
         width: MediaQuery.of(context).size.width,
         height: 60.0,
         padding: const EdgeInsets.only(
-           right: 0.0, top: 10.0, bottom: 10.0),
+           right: 0.0, top: 1.0, bottom: 1.0),
         child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Row(
             children: [

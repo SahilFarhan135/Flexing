@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CategoryWidget extends StatefulWidget {
   final String imagePath;
@@ -57,10 +58,9 @@ class _CategoryWidgetState extends State<CategoryWidget> {
   Widget build(BuildContext context) {
     final double textSize = getTextSize();
     final double containerScale = getContainerScale();
-
     return Card(
       elevation: isHovered ? 10 : 5,
-      color: Colors.indigo.shade50,
+      color: Colors.transparent,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
@@ -79,7 +79,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                 fit: BoxFit.cover,
               ),
             ),
-            padding: const EdgeInsets.all(5.0),
+            padding: const EdgeInsets.all(10.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.end,
@@ -88,7 +88,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                 Text(
                   widget.title,
                   textAlign: TextAlign.left,
-                  style: TextStyle(
+                  style:  GoogleFonts.lato(
                     fontSize: textSize,
                     decoration: TextDecoration.overline,
                     decorationStyle: TextDecorationStyle.solid,
@@ -102,7 +102,6 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                     fontWeight: FontWeight.bold,
                     decorationThickness: 2.0,
                     color: Colors.white,
-                    fontFamily: 'Proxima Nova',
                   ),
                 ),
                 const SizedBox(height: 4.0),
@@ -113,6 +112,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                       overflow: TextOverflow.ellipsis,
                       fontSize: textSize,
                       decoration: TextDecoration.none,
+                      fontFamily: 'Lato',
                     )),
                 const SizedBox(height: 4.0),
               ],

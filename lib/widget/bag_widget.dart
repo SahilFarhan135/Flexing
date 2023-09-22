@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../model/bag_item.dart';
 
@@ -16,16 +17,10 @@ class ProductCard extends StatelessWidget {
         final imageHeight = cardWidth * 0.8; // Maintain aspect ratio
         final nameFontSize = cardWidth * 0.08;
         final descriptionFontSize = cardWidth * 0.06;
-        final priceFontSize = cardWidth * 0.08;
-
         return Card(
+          color: Colors.grey.shade800,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0),
-            // if you need this
-            side: BorderSide(
-              color: Colors.grey.withOpacity(0.2),
-              width: 1,
-            ),
           ),
           elevation: 4.0,
           margin: const EdgeInsets.all(16.0),
@@ -39,7 +34,7 @@ class ProductCard extends StatelessWidget {
                 height: imageHeight,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: NetworkImage(bagItem.imagePath),
+                    image: AssetImage(bagItem.imagePath),
                     fit: BoxFit.contain,
                   ),
                 ),
@@ -50,8 +45,9 @@ class ProductCard extends StatelessWidget {
                   //Product Name
                   Text(
                     bagItem.name,
-                    style: TextStyle(
-                      color: Colors.black87,
+                    style: GoogleFonts.lato(
+                      color: Colors.white,
+                      fontStyle: FontStyle.italic,
                       fontSize: nameFontSize,
                       fontWeight: FontWeight.bold,
                     ),
@@ -62,7 +58,9 @@ class ProductCard extends StatelessWidget {
                     bagItem.description,
                     maxLines: 2, // Adjust as needed
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
+                    style: GoogleFonts.lato(
+                      color: Colors.white,
+                      fontStyle: FontStyle.italic,
                       fontSize: descriptionFontSize,
                     ),
                   ),

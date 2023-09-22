@@ -32,6 +32,8 @@ dependencies:
     sdk: flutter
 
   carousel_slider: ^4.0.0-nullsafety.0
+  url_launcher: ^6.0.10
+  google_fonts: ^6.0.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -73,6 +75,7 @@ flutter:
     - assets/images/cover3.jpg
     - assets/images/flex.png
     - assets/images/flexing_logo.png
+    - assets/images/insta.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
