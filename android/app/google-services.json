@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "543710167743",
+    "project_id": "flexing-a499f",
+    "storage_bucket": "flexing-a499f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:543710167743:android:eda77abd396e53ba687c0a",
+        "android_client_info": {
+          "package_name": "com.flexing.flexing"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZk2OXFU-uFKysOm7tqeT1zj1qqmGdcsQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
