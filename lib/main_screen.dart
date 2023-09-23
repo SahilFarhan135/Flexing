@@ -1,12 +1,21 @@
+import 'package:flexing/utils/PlatformUtils.dart';
+import 'package:flexing/utils/dialog_utils.dart';
+import 'package:flexing/utils/UrlUtils.dart';
 import 'package:flexing/widget/bag_widget.dart';
 import 'package:flexing/widget/banners.dart';
 import 'package:flexing/widget/category_widget.dart';
 import 'package:flexing/widget/my_persistent_header_delegate.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'data.dart';
 import 'model/bag_item.dart';
 
 class BagStoreHomePage extends StatelessWidget {
+  // In your Flutter app
+  final MethodChannel channel = const MethodChannel('test_channel');
+
   BagStoreHomePage({Key? key}) : super(key: key);
 
   int getResponsiveColumnCount(BuildContext context) =>
@@ -16,32 +25,95 @@ class BagStoreHomePage extends StatelessWidget {
               ? 4
               : 2;
 
+  Future<void> _showFlutterDialog(BuildContext context) async {
+    OverlayState overlayState = Overlay.of(context);
+    OverlayEntry overlayEntry = OverlayEntry(
+      opaque: true,
+      builder: (BuildContext context) {
+        return MyOverlayDialog();
+      },
+    );
+    overlayState.insert(overlayEntry);
+
+    await Future.delayed(Duration(
+        seconds:
+            3)); // Close the overlay after 3 seconds (or manually close it)
+
+    overlayEntry.remove(); // Remove the overlay
+  }
+
+  Widget build2(BuildContext context) {
+    // This is used in the platform side to register the view.
+    const String viewType = '<platform-view-type>';
+    // Pass parameters to the platform side.
+    final Map<String, dynamic> creationParams = <String, dynamic>{};
+    return AndroidView(
+      viewType: viewType,
+      layoutDirection: TextDirection.ltr,
+      creationParams: creationParams,
+      creationParamsCodec: const StandardMessageCodec(),
+      onPlatformViewCreated: (int id) {
+        // _platformViewController = PlatformViewController(id);
+        Future.delayed(const Duration(seconds: 3), () {
+          channel.invokeMethod('click');
+        });
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    channel.setMethodCallHandler((MethodCall call) async {
+      if (call.method == 'showFlutterDialog') {
+        // Show the Flutter dialog
+        await _showFlutterDialog(context);
+        return;
+      }
+      if (call.method == 'onTap') {
+        // Show the Flutter dialog
+        await _showFlutterDialog(context);
+      }
+    });
+
     return Scaffold(
-      body: CustomScrollView(
-        slivers: <Widget>[
-          SliverPersistentHeader(
-              pinned: true, delegate: MyPersistentHeaderDelegate()),
-          const SliverToBoxAdapter(child: SizedBox(height: 30)),
-          const SliverSafeArea(sliver: SliverToBoxAdapter(child: Banners())),
-          const SliverToBoxAdapter(
-              child: SizedBox(
-                  height: 30,
-                  child: Divider(
-                    thickness: 0.3,
-                    color: Colors.black12,
-                  ))),
-          _trendingItem(context),
-          _trendingItemsGrid(context),
-          _categoriesSliver(),
-          _instagramSliver(),
-          SliverToBoxAdapter(
-              child: Container(
-            color: Colors.pinkAccent.withOpacity(0.2),
-            height: 400,
-          )),
-        ],
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color(0xFF000000),
+              Color(0xFF434343),
+            ],
+          ),
+        ),
+        child: CustomScrollView(
+          slivers: <Widget>[
+            SliverPersistentHeader(
+                pinned: true, delegate: MyPersistentHeaderDelegate()),
+            const SliverToBoxAdapter(child: SizedBox(height: 30)),
+            SliverToBoxAdapter(
+                child: SizedBox(height: 400, child: build2(context))),
+            SliverSafeArea(sliver: SliverToBoxAdapter(child: Banners())),
+            const SliverToBoxAdapter(
+                child: SizedBox(
+                    height: 30,
+                    child: Divider(
+                      thickness: 0.3,
+                      color: Colors.black12,
+                    ))),
+            _trendingItem(context),
+            _trendingItemsGrid(context),
+            _categoriesSliver(),
+            _instagramSliver(),
+            _aboutUsSliver(context),
+            SliverToBoxAdapter(
+                child: Container(
+              color: Colors.pinkAccent.withOpacity(0.2),
+              height: 400,
+            )),
+          ],
+        ),
       ),
     );
   }
@@ -54,9 +126,27 @@ class BagStoreHomePage extends StatelessWidget {
             height: 30,
           ),
           const Text(
-            '--------- Categories --------',
+            '---------',
             style: TextStyle(
               fontSize: 20,
+              color: Colors.red,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text(
+            ' Categories ',
+            style: GoogleFonts.lato(
+              fontSize: 20,
+              fontStyle: FontStyle.italic,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const Text(
+            '----------',
+            style: TextStyle(
+              fontSize: 20,
+              color: Colors.red,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -71,17 +161,36 @@ class BagStoreHomePage extends StatelessWidget {
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: constraints.maxWidth > 600 ? 3 : 2,
                   // Adjust the number of columns based on screen width
-                  childAspectRatio: constraints.maxWidth > 600 ? 1.5 : 2.2,
+                  childAspectRatio: constraints.maxWidth > 600 ? 1.5 : 1,
                   // Adjust aspect ratio based on screen width
                   mainAxisSpacing: 10,
                 ),
                 itemCount: bagCategories.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return CategoryWidget(
-                    description: bagCategories[index].description,
-                    title: bagCategories[index].name,
-                    imagePath: bagCategories[index].imagePath,
-                    onTap: () {},
+                  return InkWell(
+                    onTap: () {
+                      DialogUtil.showCustomSizedDialog(context,
+                          widthPercentage: 0.9,
+                          heightPercentage:
+                              MediaQuery.of(context).size.height > 600
+                                  ? 0.9
+                                  : 0.5,
+                          content: SizedBox(
+                              width: 400,
+                              height: 400,
+                              child: Center(
+                                child: Image.asset(
+                                  bagCategories[index].imagePath,
+                                  fit: BoxFit.cover,
+                                ),
+                              )));
+                    },
+                    child: CategoryWidget(
+                      description: bagCategories[index].description,
+                      title: bagCategories[index].name,
+                      imagePath: bagCategories[index].imagePath,
+                      onTap: () {},
+                    ),
                   );
                 },
               );
@@ -96,22 +205,51 @@ class BagStoreHomePage extends StatelessWidget {
     return SliverToBoxAdapter(
         child: Column(children: [
       const SizedBox(
-        height: 20,
+        height: 50,
       ),
-      const Center(
-        child: Text(
-          'Follow Us on Instagram @flexing',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+      Center(
+        child: TextButton(
+          onPressed: () {
+            launchInstagram();
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Follow Us on ',
+                style: GoogleFonts.lato(
+                  fontStyle: FontStyle.italic,
+                  fontSize: 20,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Image.asset(
+                "assets/images/insta.png",
+                height: 40,
+                width: 40,
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Text(
+                '@FlexingBags',
+                style: GoogleFonts.lato(
+                  fontSize: 20,
+                  fontStyle: FontStyle.italic,
+                  textStyle: const TextStyle(
+                    decoration: TextDecoration.underline,
+                  ),
+                  color: Colors.blue,
+                ),
+              ),
+            ],
           ),
         ),
       ),
       const SizedBox(
-          height: 40,
-          child: Divider(
-            color: Colors.black,
-          )),
+        height: 10,
+      ),
       GridView.builder(
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
@@ -120,40 +258,72 @@ class BagStoreHomePage extends StatelessWidget {
           itemCount: 2,
           shrinkWrap: true,
           itemBuilder: (context, index) {
-            return Container(
-                width: MediaQuery.of(context).size.width * 0.4,
-                padding: const EdgeInsets.all(10.0),
-                margin: const EdgeInsets.all(10.0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10.0),
-                  shape: BoxShape.rectangle,
-                  image: const DecorationImage(
-                    image: AssetImage("assets/images/bag2.png"),
-                    fit: BoxFit.cover,
-                  ),
-                ));
+            return InkWell(
+              onTap: () {
+                launchInstagram();
+              },
+              child: Container(
+                  width: MediaQuery.of(context).size.width * 0.4,
+                  padding: const EdgeInsets.all(10.0),
+                  margin: const EdgeInsets.all(10.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    border: Border.all(color: Colors.white),
+                    shape: BoxShape.rectangle,
+                    image: DecorationImage(
+                      image: AssetImage(bagItems[index].imagePath),
+                      fit: BoxFit.contain,
+                    ),
+                  )),
+            );
           })
     ]));
   }
 
   SliverToBoxAdapter _trendingItem(BuildContext context) {
-    return const SliverToBoxAdapter(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          SizedBox(
-            height: 10,
-          ),
-          Text(
-            "--- Trending ---",
-            style: TextStyle(
-                color: Colors.blue, fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-        ],
+    return SliverToBoxAdapter(
+      child: InkWell(
+        highlightColor: Colors.red,
+        hoverColor: Colors.blue,
+        onTap: () {
+          print("Trending Item Clicked");
+          channel.invokeMethod('start');
+        },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const SizedBox(
+              height: 10,
+            ),
+            const Text(
+              '---------',
+              style: TextStyle(
+                fontSize: 20,
+                color: Colors.red,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              "Trending",
+              style: GoogleFonts.lato(
+                  fontStyle: FontStyle.italic,
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+            ),
+            const Text(
+              '---------',
+              style: TextStyle(
+                fontSize: 20,
+                color: Colors.red,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -162,7 +332,7 @@ class BagStoreHomePage extends StatelessWidget {
     return SliverGrid(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: getResponsiveColumnCount(context),
-        childAspectRatio: 0.8,
+        childAspectRatio: 0.78,
       ),
       delegate: SliverChildBuilderDelegate(
         (BuildContext context, int index) {
@@ -173,6 +343,128 @@ class BagStoreHomePage extends StatelessWidget {
         },
         childCount: bagItems.length, // Number of grid items
       ),
+    );
+  }
+
+  SliverToBoxAdapter _aboutUsSliver(BuildContext context) {
+    return SliverToBoxAdapter(
+        child: Container(
+      child: Column(
+        children: [
+          const SizedBox(
+            height: 80,
+          ),
+          const Text(
+            '-----------',
+            style: TextStyle(
+              fontSize: 30,
+              color: Colors.red,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'About',
+                  style: GoogleFonts.lato(
+                    fontSize: 40,
+                    fontStyle: FontStyle.italic,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+                Text(
+                  'Us',
+                  style: GoogleFonts.lato(
+                    color: Colors.white,
+                    fontSize: 40,
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )
+              ],
+            ),
+          ),
+          const Text(
+            '-----------',
+            style: TextStyle(
+              fontSize: 30,
+              color: Colors.red,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Center(
+            child: Text(
+              'FLEXING BAGS',
+              style: GoogleFonts.lato(
+                textStyle: Theme.of(context).textTheme.displayLarge,
+                fontSize: isAndroid(context) ? 18 : 26,
+                color: Colors.white,
+                fontWeight: FontWeight.w700,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Center(
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.6,
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              child: Text(
+                'Experience the epitome of elegance and functionality with our deluxe FLEXING BAGS. These stunning signature pieces are meticulously crafted, promising durability that aligns with high-end fashion. Showcasing an array of styles that effortlessly matches any outfit or mood, each bag is an embodiment of sheer luxury.',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.lato(
+                  fontSize: isAndroid(context) ? 14 : 22,
+                  color: Colors.white,
+                  fontStyle: FontStyle.italic,
+                  fontWeight: FontWeight.w300,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 60,
+          ),
+        ],
+      ),
+    ));
+  }
+}
+
+class MyOverlayDialog extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        // Add any background content here, if needed
+        Scaffold(
+          backgroundColor: Colors.transparent,
+        ),
+        Center(
+          child: AlertDialog(
+            title: Text('Flutter Dialog'),
+            content: Text('This is a Flutter dialog.'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+                child: Text('Close'),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

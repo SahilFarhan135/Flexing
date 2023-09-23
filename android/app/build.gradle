@@ -62,6 +62,9 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 flutter {
@@ -70,5 +73,9 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+   // implementation ('org.jitsi.react:jitsi-meet-sdk:8.4.0') { transitive = true }
     implementation platform('com.google.firebase:firebase-bom:32.3.1')
 }
