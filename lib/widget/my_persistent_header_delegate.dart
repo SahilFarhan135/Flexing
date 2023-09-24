@@ -16,30 +16,37 @@ class MyPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
       ),
       margin: const EdgeInsets.all(0.0),
       child: Container(
-        decoration:  const BoxDecoration(
-          gradient: LinearGradient(
+        decoration: const BoxDecoration(
+            /*gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              Colors.white,
-              Colors.black12,
-              Color(0xFF434343),
-              Color(0xFF000000),
-            ],
-          ),
-        ),
+          ),*/
+            ),
         width: MediaQuery.of(context).size.width,
-        height: 60.0,
-        padding: const EdgeInsets.only(
-           right: 0.0, top: 1.0, bottom: 1.0),
-        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        height: 80.0,
+        padding: const EdgeInsets.only(right: 0.0, top: 1.0, bottom: 1.0),
+        child:
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Row(
             children: [
+              SizedBox(width: MediaQuery.of(context).size.width*0.01,),
               Image.asset(
                 scale: 1.0,
-                filterQuality: FilterQuality.high,"assets/images/flexing_logo.png", height: 200.0, width: 200,fit: BoxFit.cover,),
+                filterQuality: FilterQuality.high,
+                "assets/images/logo_new.png",
+                fit: BoxFit.cover,
+              ),
             ],
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
+              SizedBox(width: 10,),
+              IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
+              SizedBox(width: MediaQuery.of(context).size.width*0.03,)
+            ],
+          )
         ]),
       ),
     );
@@ -52,8 +59,8 @@ class MyPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => 60;
+  double get maxExtent => 80;
 
   @override
-  double get minExtent => 60;
+  double get minExtent => 80;
 }

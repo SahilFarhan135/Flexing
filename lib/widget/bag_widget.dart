@@ -17,58 +17,42 @@ class ProductCard extends StatelessWidget {
         final imageHeight = cardWidth * 0.8; // Maintain aspect ratio
         final nameFontSize = cardWidth * 0.08;
         final descriptionFontSize = cardWidth * 0.06;
-        return Card(
-          color: Colors.grey.shade800,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-          elevation: 4.0,
-          margin: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            // Ensure children expand horizontally
-            children: [
-              //Product Image
-              Container(
-                height: imageHeight,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(bagItem.imagePath),
-                    fit: BoxFit.contain,
+        return Container(
+            color: Colors.grey[200],
+            margin: const EdgeInsets.all(10.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              // Ensure children expand horizontally
+              children: [
+                SizedBox(
+                  height: 10.0,
+                ),
+                //Product Image
+                Container(
+                  height: imageHeight,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage(bagItem.imagePath),
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 ),
-              ),
-              Column(
-                children: [
-                  const SizedBox(height: 10.0),
-                  //Product Name
-                  Text(
-                    bagItem.name,
-                    style: GoogleFonts.lato(
-                      color: Colors.white,
-                      fontStyle: FontStyle.italic,
-                      fontSize: nameFontSize,
-                      fontWeight: FontWeight.bold,
-                    ),
+                SizedBox(
+                  height: 10.0,
+                ),
+                Center(
+                    child: Text(
+                  bagItem.name,
+                  style: GoogleFonts.lato(
+                    color: Colors.black,
+                    fontStyle: FontStyle.italic,
+                    fontSize: nameFontSize,
+                    fontWeight: FontWeight.bold,
                   ),
-                  const SizedBox(height: 10.0),
-                  //Product Description
-                  Text(
-                    bagItem.description,
-                    maxLines: 2, // Adjust as needed
-                    overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.lato(
-                      color: Colors.white,
-                      fontStyle: FontStyle.italic,
-                      fontSize: descriptionFontSize,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
+                )),
+              ],
+            ));
       },
     );
   }

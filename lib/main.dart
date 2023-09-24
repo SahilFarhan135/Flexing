@@ -4,6 +4,7 @@ import 'package:flexing/widget/rotating.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flexing/widget/slide_up.dart';
 
 
 import 'main_screen.dart';
@@ -28,21 +29,17 @@ class MyApp extends StatelessWidget{
     return MaterialApp(
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
-
         home: FutureBuilder(
           future: Future.delayed(const Duration(milliseconds: 1500)),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               return BagStoreHomePage();
             } else {
-              return Scaffold(
-                backgroundColor: Colors.white54,
-                body: AnimatedTopWidget(
+              return SlideUpWidget(
                     child: Image.asset(
-                      "assets/images/flexing_logo.png",
+                      "assets/images/logo_new.png",
                       fit: BoxFit.cover,
-                    )),
-                );
+                    ));
               }
             },
 

@@ -6,3 +6,5 @@ class BagItem {
 
   BagItem(this.name, this.description, this.imagePath, this.price);
 }
+
+

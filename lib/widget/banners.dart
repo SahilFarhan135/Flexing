@@ -9,37 +9,30 @@ class Banners extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var aspectRatio =
+        MediaQuery.of(context).size.width >= 1200 ? 5 / 2 : 9 / 16;
+    print(aspectRatio);
     return CarouselSlider(
       options: CarouselOptions(
         height: isAndroid(context) ? 500 : null,
         autoPlay: true,
-        enlargeCenterPage: true,
+        disableCenter: true,
         autoPlayInterval: const Duration(seconds: 3),
         autoPlayAnimationDuration: const Duration(milliseconds: 800),
         autoPlayCurve: Curves.fastOutSlowIn,
         pauseAutoPlayOnTouch: true,
-        aspectRatio: 5 / 2,
+        aspectRatio: aspectRatio,
+        viewportFraction: 1.0,
         onPageChanged: (index, reason) {
           // Handle page change if needed
         },
       ),
       items: images.map((image) {
-        return Card(
-          shadowColor: Colors.white,
-          elevation: 10,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          child: Container(
-              decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            shape: BoxShape.rectangle,
-            image: DecorationImage(
-              image: AssetImage(image),
-              fit: BoxFit.cover,
-            ),
-          )),
-        );
+        return Container(
+            decoration: BoxDecoration(
+          color: Colors.white,
+          image: DecorationImage(image: AssetImage(image), fit: BoxFit.cover),
+        ));
       }).toList(),
     );
   }
