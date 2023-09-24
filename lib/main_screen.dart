@@ -14,7 +14,7 @@ import 'model/bag_item.dart';
 
 class BagStoreHomePage extends StatelessWidget {
   // In your Flutter app
-  final MethodChannel channel = const MethodChannel('test_channel');
+  final MethodChannel channel = const MethodChannel("com.zoyel.mobile");
 
   BagStoreHomePage({Key? key}) : super(key: key);
 
@@ -25,55 +25,57 @@ class BagStoreHomePage extends StatelessWidget {
               ? 4
               : 2;
 
-  Future<void> _showFlutterDialog(BuildContext context) async {
-    OverlayState overlayState = Overlay.of(context);
-    OverlayEntry overlayEntry = OverlayEntry(
-      opaque: true,
-      builder: (BuildContext context) {
-        return MyOverlayDialog();
-      },
+  void showToast(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: Duration(seconds: 2), // Adjust the duration as needed
+      ),
     );
-    overlayState.insert(overlayEntry);
-
-    await Future.delayed(Duration(
-        seconds:
-            3)); // Close the overlay after 3 seconds (or manually close it)
-
-    overlayEntry.remove(); // Remove the overlay
   }
 
-  Widget build2(BuildContext context) {
-    // This is used in the platform side to register the view.
-    const String viewType = '<platform-view-type>';
-    // Pass parameters to the platform side.
-    final Map<String, dynamic> creationParams = <String, dynamic>{};
-    return AndroidView(
-      viewType: viewType,
-      layoutDirection: TextDirection.ltr,
-      creationParams: creationParams,
-      creationParamsCodec: const StandardMessageCodec(),
-      onPlatformViewCreated: (int id) {
-        // _platformViewController = PlatformViewController(id);
-        Future.delayed(const Duration(seconds: 3), () {
-          channel.invokeMethod('click');
-        });
-      },
-    );
+  void openJitsiMeet(String link, String videoMeetingServerURL, String title,
+      String subject, String token, String userId) {
+    var jitsiData = <String, String>{};
+    jitsiData["link"] = link;
+    jitsiData["serverUrl"] = videoMeetingServerURL;
+    jitsiData["subject"] = title;
+    jitsiData["token"] = token;
+    jitsiData["isAudioMuted"] = "true";
+    jitsiData["isVideoMuted"] = "true";
+    jitsiData["isAudioOnly"] = "null";
+    jitsiData["userDisplayName"] = title;
+    jitsiData["userEmail"] = userId;
+    jitsiData["featureFlags"] = "";
+    channel.invokeMethod("open_jitsi", jitsiData);
   }
 
   @override
   Widget build(BuildContext context) {
     channel.setMethodCallHandler((MethodCall call) async {
-      if (call.method == 'showFlutterDialog') {
+      if (call.method == 'disconnect') {
         // Show the Flutter dialog
-        await _showFlutterDialog(context);
+        print(call.arguments.toString());
+        showToast(context, "disconnect paused");
+
         return;
       }
-      if (call.method == 'onTap') {
+      if (call.method == 'resumed') {
         // Show the Flutter dialog
-        await _showFlutterDialog(context);
+        print(call.arguments.toString());
+        showToast(context, "resumed paused");
+
+        return;
+      }
+      if (call.method == 'paused') {
+        // Show the Flutter dialog
+        print(call.arguments.toString());
+        showToast(context, "meeting paused");
+
+        return;
       }
     });
+    openJitsiMeet("", "", "title", "subject", "token", "userId");
 
     return Scaffold(
       body: Container(
@@ -92,8 +94,6 @@ class BagStoreHomePage extends StatelessWidget {
             SliverPersistentHeader(
                 pinned: true, delegate: MyPersistentHeaderDelegate()),
             const SliverToBoxAdapter(child: SizedBox(height: 30)),
-            SliverToBoxAdapter(
-                child: SizedBox(height: 400, child: build2(context))),
             SliverSafeArea(sliver: SliverToBoxAdapter(child: Banners())),
             const SliverToBoxAdapter(
                 child: SizedBox(
