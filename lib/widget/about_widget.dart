@@ -20,7 +20,6 @@ class AboutPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var isAndroid = MediaQuery.of(context).size.width < 600;
     return Container(
-      color: Colors.white,
       padding: EdgeInsets.all(20.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -71,7 +70,7 @@ class AboutPage extends StatelessWidget {
               width: MediaQuery.of(context).size.width * 0.6,
               padding: const EdgeInsets.only(left: 20, right: 20),
               child: Text(
-                'Experience the epitome of elegance and functionality with our deluxe FLEXING BAGS. These stunning signature pieces are meticulously crafted, promising durability that aligns with high-end fashion. Showcasing an array of styles that effortlessly matches any outfit or mood, each bag is an embodiment of sheer luxury.',
+                'Experience the epitome of elegance and functionality with our deluxe FLEXING BAGS. These stunning signature pieces are meticulously crafted, promising durability that aligns with high-end fashion. Showcasing an array of styles that effortlessly matches any outfit or mood, each bag is an embodiment of sheer luxury. Look no further than Flexing Bags! Our high-quality bags are designed to withstand the wear and tear of everyday use, whether you re hitting the gym, traveling, or just running errands. With a variety of sizes and styles to choose from, youre sure to find the perfect bag to fit your needs. So why settle for anything less than the best? Choose Flexing Bags for your next adventure Look no further than Flexing Bags! Our high-quality bags are designed to withstand the wear and tear of everyday use, whether youre hitting the gym, traveling, or just running errands. With a variety of sizes and styles to choose from, youre sure to find the perfect bag to fit your needs. So why settle for anything less than the best? Choose Flexing Bags for your next adventure',
                 style: GoogleFonts.mulish(
                   fontSize: isAndroid ? 14 : 22,
                   color: Colors.black,

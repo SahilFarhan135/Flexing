@@ -29,11 +29,12 @@ class BagStoreHomePage extends StatelessWidget {
         child: Scaffold(
       body: Container(
         decoration: const BoxDecoration(
-            /*gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),*/
-            ),
+          gradient: LinearGradient(colors: [
+            Colors.white,
+            Colors.white,
+            //Color(0xff91eae4),
+          ]),
+        ),
         child: CustomScrollView(
           slivers: <Widget>[
             SliverPersistentHeader(
@@ -74,10 +75,8 @@ class BagStoreHomePage extends StatelessWidget {
             _categoriesSliver(),
             _instagramSliver(),
             SliverToBoxAdapter(
-                child: Container(
-              color: Colors.pinkAccent.withOpacity(0.2),
               child: AboutPage(),
-            )),
+            ),
           ],
         ),
       ),
@@ -289,7 +288,6 @@ class BagStoreHomePage extends StatelessWidget {
               width: MediaQuery.of(context).size.width * 0.3,
               height: MediaQuery.of(context).size.height * 0.3,
               decoration: BoxDecoration(
-
                 image: DecorationImage(
                     image: AssetImage("assets/images/flexing_logo.png"),
                     fit: BoxFit.cover),
@@ -322,7 +320,6 @@ class BagStoreHomePage extends StatelessWidget {
               ],
             ),
           ),
-
           const SizedBox(
             height: 20,
           ),
