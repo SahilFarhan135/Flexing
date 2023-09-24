@@ -14,6 +14,9 @@ import 'widget/about_widget.dart';
 import 'model/bag_item.dart';
 
 class BagStoreHomePage extends StatelessWidget {
+  // In your Flutter app
+  final MethodChannel channel = const MethodChannel("com.zoyel.mobile");
+
   BagStoreHomePage({Key? key}) : super(key: key);
 
   int getResponsiveColumnCount(BuildContext context) =>
@@ -23,8 +26,58 @@ class BagStoreHomePage extends StatelessWidget {
               ? 4
               : 2;
 
+  void showToast(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: Duration(seconds: 2), // Adjust the duration as needed
+      ),
+    );
+  }
+
+  void openJitsiMeet(String link, String videoMeetingServerURL, String title,
+      String subject, String token, String userId) {
+    var jitsiData = <String, String>{};
+    jitsiData["link"] = link;
+    jitsiData["serverUrl"] = videoMeetingServerURL;
+    jitsiData["subject"] = title;
+    jitsiData["token"] = token;
+    jitsiData["isAudioMuted"] = "true";
+    jitsiData["isVideoMuted"] = "true";
+    jitsiData["isAudioOnly"] = "null";
+    jitsiData["userDisplayName"] = title;
+    jitsiData["userEmail"] = userId;
+    jitsiData["featureFlags"] = "";
+    channel.invokeMethod("open_jitsi", jitsiData);
+  }
+
   @override
   Widget build(BuildContext context) {
+    channel.setMethodCallHandler((MethodCall call) async {
+      if (call.method == 'disconnect') {
+        // Show the Flutter dialog
+        print(call.arguments.toString());
+        showToast(context, "disconnect paused");
+
+        return;
+      }
+      if (call.method == 'resumed') {
+        // Show the Flutter dialog
+        print(call.arguments.toString());
+        showToast(context, "resumed paused");
+
+        return;
+      }
+      if (call.method == 'paused') {
+        // Show the Flutter dialog
+        print(call.arguments.toString());
+        showToast(context, "meeting paused");
+
+        return;
+      }
+    });
+    openJitsiMeet("", "", "title", "subject", "token", "userId");
+
     return SafeArea(
         child: Scaffold(
       body: Container(
@@ -39,7 +92,7 @@ class BagStoreHomePage extends StatelessWidget {
           slivers: <Widget>[
             SliverPersistentHeader(
                 pinned: true, delegate: MyPersistentHeaderDelegate()),
-            SliverToBoxAdapter(child: Banners()),
+            SliverSafeArea(sliver: SliverToBoxAdapter(child: Banners())),
             const SliverToBoxAdapter(
                 child: SizedBox(
                     height: 30,
