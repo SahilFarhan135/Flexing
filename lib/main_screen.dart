@@ -5,6 +5,7 @@ import 'package:flexing/widget/bag_widget.dart';
 import 'package:flexing/widget/banners.dart';
 import 'package:flexing/widget/category_widget.dart';
 import 'package:flexing/widget/my_persistent_header_delegate.dart';
+import 'package:flexing/screen/category.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,9 +26,9 @@ class BagStoreHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-      body: Container(
+    return Scaffold(
+        body: SafeArea(
+      child: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(colors: [
             Colors.white,
@@ -117,26 +118,19 @@ class BagStoreHomePage extends StatelessWidget {
                 itemBuilder: (BuildContext context, int index) {
                   return InkWell(
                     onTap: () {
-                      DialogUtil.showCustomSizedDialog(context,
-                          widthPercentage: 0.9,
-                          heightPercentage:
-                              MediaQuery.of(context).size.height > 600
-                                  ? 0.9
-                                  : 0.5,
-                          content: SizedBox(
-                              width: 400,
-                              height: 400,
-                              child: Center(
-                                child: Image.asset(
-                                  bagCategories[index].imagePath,
-                                  fit: BoxFit.cover,
-                                ),
-                              )));
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (ctx) =>
+                              CategoryItemsScreen(category: bagItems[index]),
+                        ),
+                      );
                     },
-                    child: CategoryWidget(
-                      categoryItem: bagCategories[index],
-                      onTap: () {},
-                    ),
+                    child: Hero(
+                        tag: 'category-${bagCategories[index].type}',
+                        child: CategoryWidget(
+                          categoryItem: bagCategories[index],
+                          onTap: () {},
+                        )),
                   );
                 },
               );

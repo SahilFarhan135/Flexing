@@ -6,24 +6,18 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flexing/widget/slide_up.dart';
 
-
 import 'main_screen.dart';
 
-
-Future main() async{
-WidgetsFlutterBinding.ensureInitialized();
-if(kIsWeb){
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-}
-FirebaseDatabase.instance.reference().child("users").push().set({
-  "name": "John Smith",
-  "age": 30
-});
-runApp(MyApp());
-
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  if (kIsWeb) {
+    await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform);
+  }
+  runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget{
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -36,15 +30,12 @@ class MyApp extends StatelessWidget{
               return BagStoreHomePage();
             } else {
               return SlideUpWidget(
-                    child: Image.asset(
-                      "assets/images/logo_new.png",
-                      fit: BoxFit.cover,
-                    ));
-              }
-            },
-
+                  child: Image.asset(
+                "assets/images/logo_new.png",
+                fit: BoxFit.cover,
+              ));
+            }
+          },
         ));
   }
-
-
 }
