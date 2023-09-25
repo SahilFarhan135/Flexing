@@ -22,7 +22,7 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
       widget.category.imageUrls.add("assets/images/newbag4.jpeg");
     }
     return Scaffold(
-      body: Column(
+      body: SafeArea(child:  Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Card(
@@ -34,11 +34,11 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
             margin: const EdgeInsets.all(0.0),
             child: Container(
               decoration: const BoxDecoration(
-                  /*gradient: LinearGradient(
+                /*gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),*/
-                  ),
+              ),
               width: MediaQuery.of(context).size.width,
               height: 80.0,
               padding: const EdgeInsets.only(right: 0.0, top: 1.0, bottom: 1.0),
@@ -111,7 +111,7 @@ class _ItemDetailsScreenState extends State<ItemDetailsScreen> {
             ),
           ),
         ],
-      ),
+      ),)
     );
   }
 }

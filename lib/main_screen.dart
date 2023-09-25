@@ -12,6 +12,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'data.dart';
 import 'widget/about_widget.dart';
+import 'package:flexing/screen/item_detail_screen.dart';
 import 'model/bag_item.dart';
 
 class BagStoreHomePage extends StatelessWidget {
@@ -262,8 +263,18 @@ class BagStoreHomePage extends StatelessWidget {
               crossAxisSpacing: 0,
             ),
             itemBuilder: (BuildContext context, int index) {
-              return ProductCard(
-                bagItem: bagItems[index],
+              return InkWell(
+                child: Hero(
+                    tag: 'bags:-${bagItems[index].name}',
+                    child: ProductCard(
+                      bagItem: bagItems[index],
+                    )),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (ctx) =>
+                        ItemDetailsScreen(category: bagItems[index]),
+                  ));
+                },
               );
             },
           )),

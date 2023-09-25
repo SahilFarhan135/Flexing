@@ -106,6 +106,7 @@ class AboutPage extends StatelessWidget {
           TextButton(
             onPressed: () {},
             child: Text(
+              textAlign: TextAlign.center,
               'Email: flexingbags001@gmail.com',
               style: GoogleFonts.mulish(
                 fontSize: isSmallSizeDevice(context) ? 15.0 : 20.0,
@@ -119,6 +120,7 @@ class AboutPage extends StatelessWidget {
           TextButton(
             onPressed: () {},
             child: Text(
+              textAlign: TextAlign.center,
               'Phone: $phoneNumber',
               style: GoogleFonts.mulish(
                 fontSize: isSmallSizeDevice(context) ? 17.0 : 20.0,
@@ -132,6 +134,7 @@ class AboutPage extends StatelessWidget {
           TextButton(
             onPressed: () {},
             child: Text(
+              textAlign: TextAlign.center,
               'Address: 15 3rd Cross, JM Ln, Balepete, Bengaluru, Karnataka 560053',
               style: GoogleFonts.mulish(
                 fontSize: isSmallSizeDevice(context) ? 17.0 : 20.0,

@@ -11,7 +11,7 @@ class CategoryItemsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CategoryItemsGrid(category: category),
+      body: SafeArea(child: CategoryItemsGrid(category: category),),
     );
   }
 }

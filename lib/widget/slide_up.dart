@@ -52,6 +52,7 @@ class _SlideUpWidgetState extends State<SlideUpWidget>
     return SlideTransition(
         position: _offsetAnimation,
         child: Container(
+          color: Colors.white,
           height: 200, // Adjust the height as needed
           child: Center(
             child: widget.child,
