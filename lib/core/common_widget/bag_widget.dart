@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../model/bag_item.dart';
+import '../../data/model/bag_item.dart';
 
 class ProductCard extends StatelessWidget {
   final BagItem bagItem;

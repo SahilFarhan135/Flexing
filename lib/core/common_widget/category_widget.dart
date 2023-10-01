@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../model/category_item.dart';
+
+import '../../data/model/category_item.dart';
 
 class CategoryWidget extends StatefulWidget {
   final VoidCallback onTap;
@@ -74,11 +75,13 @@ class _CategoryWidgetState extends State<CategoryWidget> {
           child: Stack(
             children: [
               isHovered
-                  ? Align(alignment:Alignment.topRight,child: Image.asset(
-                  widget.categoryItem.imagePath,
-                  fit: BoxFit.cover,
-                ),
-              )
+                  ? Align(
+                      alignment: Alignment.topRight,
+                      child: Image.asset(
+                        widget.categoryItem.imagePath,
+                        fit: BoxFit.cover,
+                      ),
+                    )
                   : const SizedBox.shrink(),
               Positioned.fill(
                   child: Column(
@@ -118,7 +121,6 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                   const SizedBox(height: 4.0),
                 ],
               )),
-
             ],
           ),
         ),

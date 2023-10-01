@@ -1,5 +1,6 @@
-import 'model/bag_item.dart';
-import 'model/category_item.dart';
+import 'package:flexing/data/model/category_item.dart';
+
+import '../model/bag_item.dart';
 
 final bagItems = [
   BagItem(
@@ -31,8 +32,6 @@ final List<String> buttonOptions = [
   "Corporate"
 ];
 
-
-
 final List<String> images = [
   'assets/images/cover1.jpg',
   'assets/images/cover2.png',
@@ -60,5 +59,3 @@ final bagCategories = [
     0xF90CAF9FF,
   ),
 ];
-
-

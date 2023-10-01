@@ -1,7 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import '../data.dart';
 
 class MyPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
   @override
@@ -29,7 +26,9 @@ class MyPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Row(
             children: [
-              SizedBox(width: MediaQuery.of(context).size.width*0.01,),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.01,
+              ),
               Image.asset(
                 scale: 1.0,
                 filterQuality: FilterQuality.high,
@@ -42,9 +41,13 @@ class MyPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
-              SizedBox(width: 10,),
+              SizedBox(
+                width: 10,
+              ),
               IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
-              SizedBox(width: MediaQuery.of(context).size.width*0.03,)
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.03,
+              )
             ],
           )
         ]),

@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flexing/utils/PlatformUtils.dart';
-
-import '../model/bag_item.dart';
+// ignore: unused_import
+import 'package:flexing/core/utils/PlatformUtils.dart';
 
 class AboutPage extends StatelessWidget {
   // Replace with your Instagram profile link
@@ -20,6 +18,8 @@ class AboutPage extends StatelessWidget {
 
   // Replace with your phone number
   final String phoneNumber = '+91 6362058488';
+
+  const AboutPage({super.key});
 
   bool isSmallSizeDevice(BuildContext context) {
     return MediaQuery.of(context).size.width <= 600;

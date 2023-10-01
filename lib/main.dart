@@ -1,12 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flexing/firebase_options.dart';
-import 'package:flexing/widget/rotating.dart';
+import 'package:flexing/core/firebase_options.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:flexing/widget/slide_up.dart';
+import 'package:flexing/screen/home_screen/home_screen.dart';
 
-import 'main_screen.dart';
+import 'screen/splash_screen/splash_screen.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,13 +25,9 @@ class MyApp extends StatelessWidget {
           future: Future.delayed(const Duration(milliseconds: 1500)),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              return BagStoreHomePage();
+              return HomeScreen();
             } else {
-              return SlideUpWidget(
-                  child: Image.asset(
-                "assets/images/logo_new.png",
-                fit: BoxFit.cover,
-              ));
+              return SplashScreen();
             }
           },
         ));

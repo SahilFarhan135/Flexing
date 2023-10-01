@@ -1,29 +1,21 @@
-import 'package:flexing/utils/PlatformUtils.dart';
-import 'package:flexing/utils/dialog_utils.dart';
-import 'package:flexing/utils/UrlUtils.dart';
-import 'package:flexing/widget/bag_widget.dart';
-import 'package:flexing/widget/banners.dart';
-import 'package:flexing/widget/category_widget.dart';
-import 'package:flexing/widget/my_persistent_header_delegate.dart';
-import 'package:flexing/screen/category.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flexing/core/utils/PlatformUtils.dart';
+import 'package:flexing/core/utils/dialog_utils.dart';
+import 'package:flexing/core/utils/UrlUtils.dart';
+import 'package:flexing/core/common_widget/bag_widget.dart';
+import 'package:flexing/core/common_widget/banners.dart';
+import 'package:flexing/core/common_widget/category_widget.dart';
+import 'package:flexing/core/common_widget/my_persistent_header_delegate.dart';
+import 'package:flexing/screen/category_screen/category_screen.dart';
+import 'package:flexing/screen/details_screen/detail_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'data.dart';
-import 'widget/about_widget.dart';
-import 'package:flexing/screen/item_detail_screen.dart';
-import 'model/bag_item.dart';
 
-class BagStoreHomePage extends StatelessWidget {
-  BagStoreHomePage({Key? key}) : super(key: key);
+import '../../core/common_widget/about_widget.dart';
+import '../../data/local/data.dart';
+import 'package:flexing/core/extension/build_context_extension.dart';
 
-  int getResponsiveColumnCount(BuildContext context) =>
-      MediaQuery.of(context).size.width >= 1200
-          ? 5
-          : MediaQuery.of(context).size.width >= 600
-              ? 4
-              : 2;
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +31,12 @@ class BagStoreHomePage extends StatelessWidget {
         ),
         child: CustomScrollView(
           slivers: <Widget>[
+            ///Header
             SliverPersistentHeader(
                 pinned: true, delegate: MyPersistentHeaderDelegate()),
-            SliverToBoxAdapter(child: Banners()),
+            ///Banners
+            const SliverToBoxAdapter(child: Banners()),
+            ///space
             const SliverToBoxAdapter(
                 child: SizedBox(
                     height: 30,
@@ -49,8 +44,11 @@ class BagStoreHomePage extends StatelessWidget {
                       thickness: 0.3,
                       color: Colors.black12,
                     ))),
+            ///trending details
             _trendingItem(context),
+            ///trending items
             _trendingItemsGrid(context),
+            ///trending item view more
             SliverToBoxAdapter(
               child: Center(
                 child: Container(
@@ -58,7 +56,7 @@ class BagStoreHomePage extends StatelessWidget {
                         top: 30.0, bottom: 30.0, left: 20.0, right: 20.0),
                     child: TextButton(
                       onPressed: () {},
-                      child: Text("View More"),
+                      child: const Text("View More"),
                       style: TextButton.styleFrom(
                         textStyle: GoogleFonts.mulish(
                           fontSize: 15,
@@ -74,8 +72,11 @@ class BagStoreHomePage extends StatelessWidget {
                     )),
               ),
             ),
+            ///categories
             _categoriesSliver(),
+            ///instagram
             _instagramSliver(),
+            ///about page
             SliverToBoxAdapter(
               child: AboutPage(),
             ),
@@ -122,12 +123,12 @@ class BagStoreHomePage extends StatelessWidget {
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (ctx) =>
-                              CategoryItemsScreen(category: bagItems[index]),
+                              CategoryScreen(bagItem: bagItems[index]),
                         ),
                       );
                     },
                     child: Hero(
-                        tag: 'category-${bagCategories[index].type}',
+                        tag: 'CategoryScreen-${bagItems[index].name}',
                         child: CategoryWidget(
                           categoryItem: bagCategories[index],
                           onTap: () {},
@@ -258,96 +259,27 @@ class BagStoreHomePage extends StatelessWidget {
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               childAspectRatio:
                   MediaQuery.of(context).size.width > 1100 ? 0.9 : 0.85,
-              crossAxisCount: getResponsiveColumnCount(context),
+              crossAxisCount: context.getResponsiveColumnCount(),
               mainAxisSpacing: 0,
               crossAxisSpacing: 0,
             ),
             itemBuilder: (BuildContext context, int index) {
               return InkWell(
                 child: Hero(
-                    tag: 'bags:-${bagItems[index].name}',
+                    tag: 'DetailsScreen:${bagItems[index].name}',
                     child: ProductCard(
                       bagItem: bagItems[index],
                     )),
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                    builder: (ctx) =>
-                        ItemDetailsScreen(category: bagItems[index]),
+                    builder: (ctx) => DetailsScreen(
+                      bagItem: bagItems[index],
+                    ),
                   ));
                 },
               );
             },
           )),
     ]));
-  }
-
-  SliverToBoxAdapter _aboutUsSliver(BuildContext context) {
-    return SliverToBoxAdapter(
-        child: Container(
-      child: Column(
-        children: [
-          const SizedBox(
-            height: 50,
-          ),
-          Container(
-              width: MediaQuery.of(context).size.width * 0.3,
-              height: MediaQuery.of(context).size.height * 0.3,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage("assets/images/flexing_logo.png"),
-                    fit: BoxFit.cover),
-              )),
-          Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'About',
-                  style: GoogleFonts.mulish(
-                    fontSize: 40,
-                    fontStyle: FontStyle.normal,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-                Text(
-                  'Us',
-                  style: GoogleFonts.mulish(
-                    color: Colors.black,
-                    fontSize: 40,
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.bold,
-                  ),
-                )
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Center(
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.6,
-              padding: const EdgeInsets.only(left: 20, right: 20),
-              child: Text(
-                'Experience the epitome of elegance and functionality with our deluxe FLEXING BAGS. These stunning signature pieces are meticulously crafted, promising durability that aligns with high-end fashion. Showcasing an array of styles that effortlessly matches any outfit or mood, each bag is an embodiment of sheer luxury.',
-                style: GoogleFonts.mulish(
-                  fontSize: isAndroid(context) ? 14 : 22,
-                  color: Colors.black,
-                  fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.w300,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 60,
-          ),
-        ],
-      ),
-    ));
   }
 }
