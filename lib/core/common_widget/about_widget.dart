@@ -39,14 +39,17 @@ class AboutPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
+          ///LOGO
           Image.asset(
             "assets/images/logo_new.png",
-            width: MediaQuery.of(context).size.width * 0.5,
-            height: MediaQuery.of(context).size.height * 0.2,
+            width: MediaQuery.of(context).size.width * 0.6,
+            height: MediaQuery.of(context).size.height * 0.3,
           ),
           SizedBox(
-            height: isSmallSizeDevice(context) ? 5 : 10,
+            height: isSmallSizeDevice(context) ? 5 : 15,
           ),
+
+          ///About Us Text
           Center(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -78,9 +81,11 @@ class AboutPage extends StatelessWidget {
           SizedBox(
             height: isSmallSizeDevice(context) ? 20 : 30,
           ),
+
+          ///About Us description
           Center(
             child: Container(
-              width: MediaQuery.of(context).size.width * 0.6,
+              width: MediaQuery.of(context).size.width * 0.7,
               padding: const EdgeInsets.only(left: 20, right: 20),
               child: Text(
                 aboutText(context),
@@ -94,6 +99,8 @@ class AboutPage extends StatelessWidget {
             ),
           ),
           SizedBox(height: isSmallSizeDevice(context) ? 10.0 : 20.0),
+
+          ///Contact Us
           Text(
             'Contact Us:',
             style: GoogleFonts.mulish(
@@ -104,13 +111,15 @@ class AboutPage extends StatelessWidget {
             ),
           ),
           SizedBox(height: isSmallSizeDevice(context) ? 10.0 : 20.0),
+
+          ///Email
           TextButton(
             onPressed: () {},
             child: Text(
               textAlign: TextAlign.center,
               'Email: flexingbags001@gmail.com',
               style: GoogleFonts.mulish(
-                fontSize: isSmallSizeDevice(context) ? 15.0 : 20.0,
+                fontSize: isSmallSizeDevice(context) ? 15.0 : 25.0,
                 fontStyle: FontStyle.normal,
                 color: Colors.black,
                 fontWeight: FontWeight.w500,
@@ -118,13 +127,15 @@ class AboutPage extends StatelessWidget {
             ),
           ),
           SizedBox(height: isSmallSizeDevice(context) ? 10.0 : 20.0),
+
+          ///Phone Number
           TextButton(
             onPressed: () {},
             child: Text(
               textAlign: TextAlign.center,
               'Phone: $phoneNumber',
               style: GoogleFonts.mulish(
-                fontSize: isSmallSizeDevice(context) ? 17.0 : 20.0,
+                fontSize: isSmallSizeDevice(context) ? 17.0 : 25.0,
                 fontStyle: FontStyle.normal,
                 color: Colors.black,
                 fontWeight: FontWeight.w500,
@@ -132,13 +143,15 @@ class AboutPage extends StatelessWidget {
             ),
           ),
           SizedBox(height: isSmallSizeDevice(context) ? 10.0 : 20.0),
+
+          ///Address
           TextButton(
             onPressed: () {},
             child: Text(
               textAlign: TextAlign.center,
               'Address: 15 3rd Cross, J M Lane, Balepete, Bengaluru, Karnataka 560053',
               style: GoogleFonts.mulish(
-                fontSize: isSmallSizeDevice(context) ? 17.0 : 20.0,
+                fontSize: isSmallSizeDevice(context) ? 17.0 : 25.0,
                 fontStyle: FontStyle.normal,
                 color: Colors.black,
                 fontWeight: FontWeight.w500,

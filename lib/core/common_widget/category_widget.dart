@@ -66,15 +66,11 @@ class _CategoryWidgetState extends State<CategoryWidget> {
             borderRadius: BorderRadius.circular(10.0),
             shape: BoxShape.rectangle,
             color: Color(widget.categoryItem.color),
-            /*image: DecorationImage(
-              image: _imageProvider,
-              fit: BoxFit.cover,
-            ),*/
           ),
           padding: const EdgeInsets.all(10.0),
           child: Stack(
             children: [
-              isHovered
+             /* isHovered
                   ? Align(
                       alignment: Alignment.topRight,
                       child: Image.asset(
@@ -82,7 +78,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                         fit: BoxFit.cover,
                       ),
                     )
-                  : const SizedBox.shrink(),
+                  : const SizedBox.shrink(),*/
               Positioned.fill(
                   child: Column(
                 mainAxisSize: MainAxisSize.min,
