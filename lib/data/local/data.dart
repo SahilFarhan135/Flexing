@@ -6,23 +6,23 @@ final bagItems = [
   BagItem(
       'Bag 1', 'Description of Bag 1', 'assets/images/newbag1.jpeg', 990.99),
   BagItem(
-      'Bag 1', 'Description of Bag 1', 'assets/images/newbag2.jpeg', 7349.99),
+      'Bag 12', 'Description of Bag 1', 'assets/images/newbag2.jpeg', 7349.99),
   BagItem('Bag 3', 'Description o4444f Bag 1', 'assets/images/newbag3.jpeg',
       379.99),
-  BagItem('Bag 444444', 'Description of Bag 1', 'assets/images/newbag4.jpeg',
+  BagItem('Bag 44jhfjd4444', 'Description of Bag 1',
+      'assets/images/newbag4.jpeg', 849.99),
+  BagItem(
+      'Bag 3y', 'Description of Bag 1', 'assets/images/newbag5.jpeg', 849.99),
+  BagItem('Bag 4dkjh44444', 'Description of Bag 1',
+      'assets/images/newbag6.jpeg', 849.99),
+  BagItem('Bag 444d,h444', 'Description of Bag 1', 'assets/images/bag2.png',
       849.99),
-  BagItem('Bag 444444', 'Description of Bag 1', 'assets/images/newbag5.jpeg',
+  BagItem('Bag 44diuieod4444', 'Description of Bag 1', 'assets/images/bag4.png',
       849.99),
-  BagItem('Bag 444444', 'Description of Bag 1', 'assets/images/newbag6.jpeg',
+  BagItem('Bag 4/;djh44444', 'Description of Bag 1', 'assets/images/bag4.png',
       849.99),
-  BagItem(
-      'Bag 444444', 'Description of Bag 1', 'assets/images/bag2.png', 849.99),
-  BagItem(
-      'Bag 444444', 'Description of Bag 1', 'assets/images/bag4.png', 849.99),
-  BagItem(
-      'Bag 444444', 'Description of Bag 1', 'assets/images/bag4.png', 849.99),
-  BagItem(
-      'Bag 444444', 'Description of Bag 1', 'assets/images/bag4.png', 849.99),
+  BagItem('Bag 444dko444', 'Description of Bag 1', 'assets/images/bag4.png',
+      849.99),
   // Add more bag items here
 ];
 final List<String> buttonOptions = [

@@ -85,6 +85,11 @@ flutter:
     - assets/images/newbag5.jpeg
     - assets/images/newbag6.jpeg
     - assets/images/logo_new.png
+    - assets/images/clan1.png
+    - assets/images/clan2.png
+    - assets/images/clan3.png
+    - assets/images/clan4.png
+    - assets/images/clan5.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

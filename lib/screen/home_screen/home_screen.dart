@@ -34,8 +34,10 @@ class HomeScreen extends StatelessWidget {
             ///Header
             SliverPersistentHeader(
                 pinned: true, delegate: MyPersistentHeaderDelegate()),
+
             ///Banners
             const SliverToBoxAdapter(child: Banners()),
+
             ///space
             const SliverToBoxAdapter(
                 child: SizedBox(
@@ -44,10 +46,13 @@ class HomeScreen extends StatelessWidget {
                       thickness: 0.3,
                       color: Colors.black12,
                     ))),
+
             ///trending details
             _trendingItem(context),
+
             ///trending items
             _trendingItemsGrid(context),
+
             ///trending item view more
             SliverToBoxAdapter(
               child: Center(
@@ -72,10 +77,13 @@ class HomeScreen extends StatelessWidget {
                     )),
               ),
             ),
+
             ///categories
             _categoriesSliver(),
+
             ///instagram
             _instagramSliver(),
+
             ///about page
             SliverToBoxAdapter(
               child: AboutPage(),
@@ -122,13 +130,13 @@ class HomeScreen extends StatelessWidget {
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (ctx) =>
-                              CategoryScreen(bagItem: bagItems[index]),
+                          builder: (ctx) => CategoryScreen(
+                              categoryItem: bagCategories[index]),
                         ),
                       );
                     },
                     child: Hero(
-                        tag: 'CategoryScreen-${bagItems[index].name}',
+                        tag: 'CategoryScreen-${bagCategories[index].type}',
                         child: CategoryWidget(
                           categoryItem: bagCategories[index],
                           onTap: () {},

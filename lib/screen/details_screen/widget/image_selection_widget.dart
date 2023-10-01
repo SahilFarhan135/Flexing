@@ -41,7 +41,7 @@ class ItemImageList extends StatelessWidget {
               imageUrls[index],
               height: mHeight,
               width: mWidth,
-              fit: BoxFit.cover,
+              fit: BoxFit.contain,
             ),
           ),
         );

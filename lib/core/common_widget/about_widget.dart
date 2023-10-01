@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 // ignore: unused_import
 import 'package:flexing/core/utils/PlatformUtils.dart';
 
@@ -96,13 +97,13 @@ class AboutPage extends StatelessWidget {
           Text(
             'Contact Us:',
             style: GoogleFonts.mulish(
-              fontSize: isSmallSizeDevice(context) ? 17.0 : 20.0,
+              fontSize: isSmallSizeDevice(context) ? 20.0 : 25.0,
               fontStyle: FontStyle.normal,
               color: Colors.black,
               fontWeight: FontWeight.bold,
             ),
           ),
-          //SizedBox(height: isSmallSizeDevice(context) ? 10.0 : 20.0),
+          SizedBox(height: isSmallSizeDevice(context) ? 10.0 : 20.0),
           TextButton(
             onPressed: () {},
             child: Text(
@@ -116,7 +117,7 @@ class AboutPage extends StatelessWidget {
               ),
             ),
           ),
-          //SizedBox(height: isSmallSizeDevice(context) ? 10.0 : 20.0),
+          SizedBox(height: isSmallSizeDevice(context) ? 10.0 : 20.0),
           TextButton(
             onPressed: () {},
             child: Text(
@@ -130,12 +131,12 @@ class AboutPage extends StatelessWidget {
               ),
             ),
           ),
-          //SizedBox(height: isSmallSizeDevice(context) ? 10.0 : 20.0),
+          SizedBox(height: isSmallSizeDevice(context) ? 10.0 : 20.0),
           TextButton(
             onPressed: () {},
             child: Text(
               textAlign: TextAlign.center,
-              'Address: 15 3rd Cross, JM Ln, Balepete, Bengaluru, Karnataka 560053',
+              'Address: 15 3rd Cross, J M Lane, Balepete, Bengaluru, Karnataka 560053',
               style: GoogleFonts.mulish(
                 fontSize: isSmallSizeDevice(context) ? 17.0 : 20.0,
                 fontStyle: FontStyle.normal,
