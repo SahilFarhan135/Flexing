@@ -36,6 +36,14 @@ final List<String> images = [
   'assets/images/cover1.jpg',
   'assets/images/cover2.png',
   'assets/images/cover3.webp',
+  'assets/images/banner1.jpg',
+  'assets/images/banner2.jpeg',
+  'assets/images/banner3.jpeg',
+  'assets/images/banner4.jpeg',
+  'assets/images/banner5.jpg',
+  'assets/images/banner6.jpg',
+  'assets/images/banner7.jpg',
+  'assets/images/banner8.jpg',
 ];
 
 final bagCategories = [
