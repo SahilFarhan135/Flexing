@@ -10,11 +10,11 @@ class Banners extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var aspectRatio =
-        MediaQuery.of(context).size.width >= 1200 ? 6 / 2 : 9 / 16;
+        MediaQuery.of(context).size.width >= 1200 ? 7 / 3 : 9 / 16;
     print(aspectRatio);
     return CarouselSlider(
       options: CarouselOptions(
-        height: isAndroid(context) ? 500 : null,
+        height: isAndroid(context) ? 600 : null,
         autoPlay: true,
         disableCenter: true,
         enlargeCenterPage: true,

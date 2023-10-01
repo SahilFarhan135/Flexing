@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flexing/screen/details_screen/widget/image_selection_widget.dart';
-
 import '../../data/model/bag_item.dart';
 import 'package:flexing/core/common_widget/AppBar.dart';
-import 'package:flexing/core/common_widget/about_widget.dart';
 
 class DetailsScreen extends StatefulWidget {
   final BagItem bagItem;
 
-  const DetailsScreen({required this.bagItem});
+  const DetailsScreen({super.key, required this.bagItem});
 
   @override
   _DetailsScreenState createState() => _DetailsScreenState();
@@ -29,33 +26,13 @@ class _DetailsScreenState extends State<DetailsScreen> {
     widget.bagItem.imageUrls.add("assets/images/clan4.png");
     widget.bagItem.imageUrls.add("assets/images/clan5.png");
 
+    var isWeb = MediaQuery.of(context).size.width > 600;
     return Scaffold(
-        appBar: CommonAppBar(showBackButton: true),
-        body: SafeArea(
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              return SingleChildScrollView(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  //Header
-                  constraints.maxWidth < 600
-                      ? mobileDesign(context)
-                      : webDesign(context),
-
-                  ///Product Details
-                  Padding(
-                      padding: EdgeInsets.only(left: 15, right: 15),
-                      child: Text(
-                        'Product Details',
-                        style: TextStyle(fontSize: 20.0),
-                      )),
-                  ProductDetailsScreen()
-                ],
-              ));
-            },
-          ),
-        ));
+      appBar: CommonAppBar(showBackButton: true),
+      body: SafeArea(
+        child: isWeb ? webDesign(context) : mobileDesign(context),
+      ),
+    );
   }
 
   Widget mainItemImages(double width, double height) {
@@ -94,162 +71,169 @@ class _DetailsScreenState extends State<DetailsScreen> {
     var size = MediaQuery.of(context).size;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         ///Item Images
         mainItemImages(
           size.width * 0.5,
           size.height - appBarHeight,
         ),
-        Expanded(
-          flex: 1,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SizedBox(height: 40),
 
-              ///Item name
-              Padding(
-                padding: EdgeInsets.only(left: 15, right: 15),
-                child: Text(
-                  'Stylish Leather Bag', // Replace with your item name
-                  style: TextStyle(fontSize: 28.0, fontWeight: FontWeight.bold),
+        SizedBox(
+            width: size.width * 0.5,
+            height: size.height - appBarHeight,
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                const SizedBox(height: 40),
+
+                ///Item name
+                const Padding(
+                  padding: EdgeInsets.only(left: 15, right: 15),
+                  child: Text(
+                    'Stylish Leather Bag', // Replace with your item name
+                    style:
+                        TextStyle(fontSize: 28.0, fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
-              SizedBox(height: 15.0),
+                const SizedBox(height: 15.0),
 
-              /// Item Price
-              Padding(
-                  padding: EdgeInsets.only(left: 15, right: 15),
-                  child: Text(
-                    '\$99.99', // Replace with your item price
-                    style: TextStyle(fontSize: 28.0, color: Colors.green),
-                  )),
-              SizedBox(height: 15.0),
+                /// Item Price
+                const Padding(
+                    padding: EdgeInsets.only(left: 15, right: 15),
+                    child: Text(
+                      '\$99.99', // Replace with your item price
+                      style: TextStyle(fontSize: 28.0, color: Colors.green),
+                    )),
+                const SizedBox(height: 15.0),
 
-              /// Item Description
-              Padding(
-                  padding: EdgeInsets.only(left: 15, right: 15),
-                  child: Text(
-                    'A fashionable and spacious leather bag suitable for any occasion. '
-                    'It features multiple compartments and a durable design.',
-                    style: TextStyle(fontSize: 20.0),
-                  )),
-              SizedBox(height: 15.00),
+                /// Item Description
+                const Padding(
+                    padding: EdgeInsets.only(left: 15, right: 15),
+                    child: Text(
+                      'A fashionable and spacious leather bag suitable for any occasion. '
+                      'It features multiple compartments and a durable design.',
+                      style: TextStyle(fontSize: 20.0),
+                    )),
+                const SizedBox(height: 15.00),
 
-              ///Colors
-              Padding(
-                  padding: EdgeInsets.only(left: 15, right: 15),
-                  child: Text(
-                    'Colors',
-                    style: TextStyle(fontSize: 24.0),
-                  )),
-              SizedBox(height: 15.00),
-              Container(
-                margin: const EdgeInsets.all(15),
-                width: size.width,
-                height: size.height * 0.20,
-                child: ItemImageList(
-                  scrollDirection: Axis.horizontal,
-                  imageUrls: widget.bagItem.imageUrls,
-                  selectedImageIndex: selectedImageIndex,
-                  mWidth: size.width * 0.10,
-                  mHeight: size.height * 0.10,
-                  onImageTapped: (index) {
-                    setState(() {
-                      selectedImageIndex = index;
-                    });
-                  },
+                ///Colors
+                const Padding(
+                    padding: EdgeInsets.only(left: 15, right: 15),
+                    child: Text(
+                      'Colors',
+                      style: TextStyle(fontSize: 24.0),
+                    )),
+                const SizedBox(height: 15.00),
+                Container(
+                  margin: const EdgeInsets.all(15),
+                  width: size.width,
+                  height: size.height * 0.20,
+                  child: ItemImageList(
+                    scrollDirection: Axis.horizontal,
+                    imageUrls: widget.bagItem.imageUrls,
+                    selectedImageIndex: selectedImageIndex,
+                    mWidth: size.width * 0.10,
+                    mHeight: size.height * 0.10,
+                    onImageTapped: (index) {
+                      setState(() {
+                        selectedImageIndex = index;
+                      });
+                    },
+                  ),
                 ),
-              ),
-              SizedBox(height: 15.00),
-            ],
-          ),
-        ),
+                const SizedBox(height: 15.00),
+
+                ///Product Details
+                const Padding(
+                    padding: EdgeInsets.only(left: 20, right: 15),
+                    child: Text(
+                      'Product Details',
+                      style: TextStyle(fontSize: 20.0),
+                    )),
+                ProductDetailsScreen()
+              ],
+            )),
       ],
     );
   }
 
   Widget mobileDesign(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return Container(
-      color: Colors.white70,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          mainItemImages(size.width, size.height * 0.5),
+    return ListView(
+      shrinkWrap: true,
+      children: [
+        mainItemImages(size.width, size.height * 0.5),
 
-          SizedBox(
-            height: 40,
+        const SizedBox(
+          height: 40,
+        ),
+
+        ///Item Name
+        const Padding(
+          padding: EdgeInsets.only(left: 15, right: 10),
+          child: Text(
+            'Stylish Leather Bag', // Replace with your item name
+            style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
           ),
+        ),
+        const SizedBox(height: 15.0),
 
-          ///Item Name
-          Padding(
+        /// Item Price
+        const Padding(
             padding: EdgeInsets.only(left: 15, right: 10),
             child: Text(
-              'Stylish Leather Bag', // Replace with your item name
-              style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
-            ),
+              '\$99.99', // Replace with your item price
+              style: TextStyle(fontSize: 28.0, color: Colors.green),
+            )),
+        const SizedBox(height: 15.0),
+
+        /// Item Description
+        const Padding(
+            padding: EdgeInsets.only(left: 15, right: 10),
+            child: Text(
+              'A fashionable and spacious leather bag suitable for any occasion. '
+              'It features multiple compartments and a durable design.',
+              style: TextStyle(fontSize: 16.0),
+            )),
+        const SizedBox(height: 15.0),
+
+        ///Colors
+        const Padding(
+            padding: EdgeInsets.only(left: 15, right: 15),
+            child: Text(
+              'Colors',
+              style: TextStyle(fontSize: 20.0),
+            )),
+        const SizedBox(height: 15.0),
+        Container(
+          margin: const EdgeInsets.only(left: 5, right: 5),
+          height: size.height * 0.15,
+          child: ItemImageList(
+            scrollDirection: Axis.horizontal,
+            imageUrls: widget.bagItem.imageUrls,
+            selectedImageIndex: selectedImageIndex,
+            mWidth: size.width * 0.25,
+            mHeight: size.height * 0.15,
+            onImageTapped: (index) {
+              setState(() {
+                selectedImageIndex = index;
+              });
+            },
           ),
-          SizedBox(height: 15.0),
+        ),
 
-          /// Item Price
-          Padding(
-              padding: EdgeInsets.only(left: 15, right: 10),
-              child: Text(
-                '\$99.99', // Replace with your item price
-                style: TextStyle(fontSize: 28.0, color: Colors.green),
-              )),
-          SizedBox(height: 15.0),
+        const SizedBox(height: 20.00),
 
-          /// Item Description
-          Padding(
-              padding: EdgeInsets.only(left: 15, right: 10),
-              child: Text(
-                'A fashionable and spacious leather bag suitable for any occasion. '
-                'It features multiple compartments and a durable design.',
-                style: TextStyle(fontSize: 16.0),
-              )),
-          SizedBox(height: 15.0),
-
-          ///Colors
-          Padding(
-              padding: EdgeInsets.only(left: 15, right: 15),
-              child: Text(
-                'Colors',
-                style: TextStyle(fontSize: 20.0),
-              )),
-          SizedBox(height: 15.0),
-          Container(
-            margin: const EdgeInsets.only(left: 5, right: 5),
-            height: size.height * 0.15,
-            child: ItemImageList(
-              scrollDirection: Axis.horizontal,
-              imageUrls: widget.bagItem.imageUrls,
-              selectedImageIndex: selectedImageIndex,
-              mWidth: size.width * 0.25,
-              mHeight: size.height * 0.15,
-              onImageTapped: (index) {
-                setState(() {
-                  selectedImageIndex = index;
-                });
-              },
-            ),
-          ),
-
-          SizedBox(height: 20.00),
-
-          ///Product Details
-          Padding(
-              padding: EdgeInsets.only(left: 20, right: 15),
-              child: Text(
-                'Product Details',
-                style: TextStyle(fontSize: 20.0),
-              )),
-          ProductDetailsScreen()
-        ],
-      ),
+        ///Product Details
+        const Padding(
+            padding: EdgeInsets.only(left: 20, right: 15),
+            child: Text(
+              'Product Details',
+              style: TextStyle(fontSize: 20.0),
+            )),
+        ProductDetailsScreen()
+      ],
     );
   }
 }
@@ -277,6 +261,8 @@ class ProductDetailsScreen extends StatelessWidget {
     ProductDetail(key: 'Dimension', value: 'Small 4.5 ft'),
   ];
 
+  ProductDetailsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     var isWeb = MediaQuery.of(context).size.width > 600;
@@ -288,23 +274,24 @@ class ProductDetailsScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(isWeb ? 10 : 0)),
         child: ListView.builder(
           shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
           itemCount: details.length,
           itemBuilder: (context, index) {
             return Container(
                 margin: isWeb
-                    ? EdgeInsets.symmetric(horizontal: 16, vertical: 8)
-                    : EdgeInsets.all(0),
+                    ? const EdgeInsets.symmetric(horizontal: 16, vertical: 8)
+                    : const EdgeInsets.all(0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Expanded(
                         flex: 1,
                         child: Padding(
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                                 left: 15, right: 15, top: 10, bottom: 10),
                             child: Text(
                               details[index].key + " : ",
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 20.0,
                                   color: Colors.black54,
                                   fontWeight: FontWeight.w500),
@@ -312,11 +299,11 @@ class ProductDetailsScreen extends StatelessWidget {
                     Expanded(
                         flex: 1,
                         child: Padding(
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                                 left: 15, right: 15, top: 10, bottom: 10),
                             child: Text(
                               details[index].value,
-                              style: TextStyle(fontSize: 20.0),
+                              style: const TextStyle(fontSize: 20.0),
                             )))
                   ],
                 ));
