@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flexing/screen/home_screen/home_screen.dart';
 
 import 'screen/splash_screen/splash_screen.dart';
+import 'package:flexing/data/repository/about_repository.dart';
+import 'package:flexing/data/repository/category_repository.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,6 +14,8 @@ Future main() async {
     await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform);
   }
+  AboutRepository().invoke();
+  CategoryRepository().invoke();
   runApp(MyApp());
 }
 

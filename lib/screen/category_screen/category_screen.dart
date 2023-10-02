@@ -15,34 +15,35 @@ class CategoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CommonAppBar(showBackButton: true),
-      body: SafeArea(
-          child: Hero(
-        tag: 'CategoryScreen-${categoryItem.type}',
-        child: GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            childAspectRatio:
-                MediaQuery.of(context).size.width > 1100 ? 1 : 0.85,
-            crossAxisCount: context.getResponsiveColumnCount(),
-            mainAxisSpacing: 0,
-            crossAxisSpacing: 0,
-          ),
-          itemCount: bagItems.length,
-          itemBuilder: (ctx, index) {
-            return GestureDetector(
-              child: ItemCard(bagItem: bagItems[index]),
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (ctx) => DetailsScreen(bagItem: bagItems[index]),
-                  ),
+    return SafeArea(
+      child: Scaffold(
+          appBar: CommonAppBar(showBackButton: true),
+          body: Hero(
+            tag: 'CategoryScreen-${categoryItem.name}',
+            child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                childAspectRatio:
+                    MediaQuery.of(context).size.width > 1100 ? 1 : 0.85,
+                crossAxisCount: context.getResponsiveColumnCount(),
+                mainAxisSpacing: 0,
+                crossAxisSpacing: 0,
+              ),
+              itemCount: bagItems.length,
+              itemBuilder: (ctx, index) {
+                return GestureDetector(
+                  child: ItemCard(bagItem: bagItems[index]),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (ctx) =>
+                            DetailsScreen(bagItem: bagItems[index]),
+                      ),
+                    );
+                  },
                 );
               },
-            );
-          },
-        ),
-      )),
+            ),
+          )),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'dart:core';
 
 import '../../data/model/category_item.dart';
 
@@ -65,7 +66,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.0),
             shape: BoxShape.rectangle,
-            color: Color(widget.categoryItem.color),
+            color: Color(int.parse(widget.categoryItem.color)),
           ),
           padding: const EdgeInsets.all(10.0),
           child: Stack(
@@ -86,7 +87,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.categoryItem.type,
+                    widget.categoryItem.name,
                     textAlign: TextAlign.left,
                     style: GoogleFonts.lato(
                       fontSize: textSize,

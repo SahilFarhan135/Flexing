@@ -27,10 +27,10 @@ class _DetailsScreenState extends State<DetailsScreen> {
     widget.bagItem.imageUrls.add("assets/images/clan5.png");
 
     var isWeb = MediaQuery.of(context).size.width > 600;
-    return Scaffold(
-      appBar: CommonAppBar(showBackButton: true),
-      body: SafeArea(
-        child: isWeb ? webDesign(context) : mobileDesign(context),
+    return SafeArea(
+      child: Scaffold(
+        appBar: CommonAppBar(showBackButton: true),
+        body: isWeb ? webDesign(context) : mobileDesign(context),
       ),
     );
   }

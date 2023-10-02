@@ -44,4 +44,14 @@ class DefaultFirebaseOptions {
       appId: "1:543710167743:web:3bb68c1eeeaf2440687c0a",
       measurementId: "G-DFT90GJB36",
       databaseURL: "https://flexing-a499f-default-rtdb.firebaseio.com/");
+
+  static const FirebaseOptions android = FirebaseOptions(
+      apiKey: "AIzaSyAZk2OXFU-uFKysOm7tqeT1zj1qqmGdcsQ",
+      authDomain: "flexing-a499f.firebaseapp.com",
+      projectId: "flexing-a499f",
+      storageBucket: "flexing-a499f.appspot.com",
+      messagingSenderId: "543710167743",
+      appId: "1:543710167743:android:eda77abd396e53ba687c0a",
+      measurementId: "G-DFT90GJB36",
+      databaseURL: "https://flexing-a499f-default-rtdb.firebaseio.com/");
 }

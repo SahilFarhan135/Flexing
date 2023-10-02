@@ -5,6 +5,7 @@ import 'package:flexing/core/common_widget/bag_widget.dart';
 import 'package:flexing/core/common_widget/banners.dart';
 import 'package:flexing/core/common_widget/category_widget.dart';
 import 'package:flexing/core/common_widget/my_persistent_header_delegate.dart';
+import 'package:flexing/data/model/category_item.dart';
 import 'package:flexing/screen/category_screen/category_screen.dart';
 import 'package:flexing/screen/details_screen/detail_screen.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,9 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../core/common_widget/about_widget.dart';
 import '../../data/local/data.dart';
 import 'package:flexing/core/extension/build_context_extension.dart';
+import 'package:flexing/core/common_widget/async_widget.dart';
+
+import '../../data/repository/category_repository.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -113,39 +117,48 @@ class HomeScreen extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          LayoutBuilder(
-            builder: (context, constraints) {
-              return GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: constraints.maxWidth > 600 ? 3 : 2,
-                  // Adjust the number of columns based on screen width
-                  childAspectRatio: constraints.maxWidth > 600 ? 1.5 : 1,
-                  mainAxisSpacing: 0,
-                ),
-                itemCount: bagCategories.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (ctx) => CategoryScreen(
-                              categoryItem: bagCategories[index]),
-                        ),
+          AsyncWidget<List<CategoryItem>>(
+              fetchData: CategoryRepository().invoke,
+              loadingWidget: const SizedBox(
+                  width: 100,
+                  height: 100,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  )),
+              errorWidget: SizedBox.fromSize(),
+              successData: (List<CategoryItem> data) {
+                return LayoutBuilder(builder: (context, constraints) {
+                  return GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: constraints.maxWidth > 600 ? 3 : 2,
+                      // Adjust the number of columns based on screen width
+                      childAspectRatio: constraints.maxWidth > 600 ? 1.5 : 1,
+                      mainAxisSpacing: 0,
+                    ),
+                    itemCount: data.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (ctx) => CategoryScreen(
+                                  categoryItem: data[index]),
+                            ),
+                          );
+                        },
+                        child: Hero(
+                            tag: 'CategoryScreen-${data[index].name}',
+                            child: CategoryWidget(
+                              categoryItem: data[index],
+                              onTap: () {},
+                            )),
                       );
                     },
-                    child: Hero(
-                        tag: 'CategoryScreen-${bagCategories[index].type}',
-                        child: CategoryWidget(
-                          categoryItem: bagCategories[index],
-                          onTap: () {},
-                        )),
                   );
-                },
-              );
-            },
-          ),
+                });
+              }),
         ],
       ),
     );
