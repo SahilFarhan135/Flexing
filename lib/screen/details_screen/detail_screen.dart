@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flexing/screen/details_screen/widget/image_selection_widget.dart';
 import '../../data/model/bag_item.dart';
 import 'package:flexing/core/common_widget/AppBar.dart';
+import 'package:flexing/data/repository/images_repository.dart';
+import 'package:flexing/core/common_widget/async_widget.dart';
 
 class DetailsScreen extends StatefulWidget {
   final BagItem bagItem;
@@ -17,15 +19,9 @@ class _DetailsScreenState extends State<DetailsScreen> {
 
   static const appBarHeight = 80;
 
+
   @override
   Widget build(BuildContext context) {
-    widget.bagItem.imageUrls.clear();
-    widget.bagItem.imageUrls.add("assets/images/clan1.png");
-    widget.bagItem.imageUrls.add("assets/images/clan2.png");
-    widget.bagItem.imageUrls.add("assets/images/clan3.png");
-    widget.bagItem.imageUrls.add("assets/images/clan4.png");
-    widget.bagItem.imageUrls.add("assets/images/clan5.png");
-
     var isWeb = MediaQuery.of(context).size.width > 600;
     return SafeArea(
       child: Scaffold(
@@ -36,35 +32,48 @@ class _DetailsScreenState extends State<DetailsScreen> {
   }
 
   Widget mainItemImages(double width, double height) {
-    return Row(
-      children: [
-        Container(
-          margin: const EdgeInsets.only(left: 5, right: 5),
-          width: width * 0.20,
-          height: height,
-          child: ItemImageList(
-            scrollDirection: Axis.vertical,
-            imageUrls: widget.bagItem.imageUrls,
-            selectedImageIndex: selectedImageIndex,
-            mWidth: width * 0.20,
-            mHeight: height * 0.25,
-            onImageTapped: (index) {
-              setState(() {
-                selectedImageIndex = index;
-              });
-            },
-          ), // <-- Removed extra semicolon here
-        ),
-        Container(
-            margin: const EdgeInsets.only(left: 5, right: 5),
-            child: Image.asset(
-              widget.bagItem.imageUrls[selectedImageIndex],
-              fit: BoxFit.contain,
-              width: width * 0.70,
-              height: height,
+    return AsyncWidget<List<String>>(
+        fetchData: ImagesRepository(
+          widget.bagItem.categoryCode
+        ).invoke,
+        loadingWidget: const SizedBox(
+            width: 100,
+            height: 100,
+            child: Center(
+              child: CircularProgressIndicator(),
             )),
-      ],
-    );
+        errorWidget: SizedBox.fromSize(),
+        successData: (List<String> imageUrls) {
+          return Row(
+            children: [
+              Container(
+                margin: const EdgeInsets.only(left: 5, right: 5),
+                width: width * 0.20,
+                height: height,
+                child: ItemImageList(
+                  scrollDirection: Axis.vertical,
+                  imageUrls: imageUrls,
+                  selectedImageIndex: selectedImageIndex,
+                  mWidth: width * 0.20,
+                  mHeight: height * 0.25,
+                  onImageTapped: (index) {
+                    setState(() {
+                      selectedImageIndex = index;
+                    });
+                  },
+                ),
+              ),
+              Container(
+                  margin: const EdgeInsets.only(left: 5, right: 5),
+                  child: Image.network(
+                    imageUrls.first,
+                    fit: BoxFit.contain,
+                    width: width * 0.70,
+                    height: height,
+                  )),
+            ],
+          );
+        });
   }
 
   Widget webDesign(BuildContext context) {
@@ -125,13 +134,13 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       style: TextStyle(fontSize: 24.0),
                     )),
                 const SizedBox(height: 15.00),
-                Container(
+                /*  Container(
                   margin: const EdgeInsets.all(15),
                   width: size.width,
                   height: size.height * 0.20,
                   child: ItemImageList(
                     scrollDirection: Axis.horizontal,
-                    imageUrls: widget.bagItem.imageUrls,
+                    imageUrls: widget.bagItem.colorCodes,
                     selectedImageIndex: selectedImageIndex,
                     mWidth: size.width * 0.10,
                     mHeight: size.height * 0.10,
@@ -141,7 +150,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       });
                     },
                   ),
-                ),
+                ),*/
                 const SizedBox(height: 15.00),
 
                 ///Product Details
@@ -211,7 +220,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
           height: size.height * 0.15,
           child: ItemImageList(
             scrollDirection: Axis.horizontal,
-            imageUrls: widget.bagItem.imageUrls,
+            imageUrls: widget.bagItem.colorCodes,
             selectedImageIndex: selectedImageIndex,
             mWidth: size.width * 0.25,
             mHeight: size.height * 0.15,

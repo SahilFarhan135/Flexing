@@ -17,10 +17,17 @@ class FirebaseDBManager {
     Map<String, dynamic> values = {};
 
     if (event.snapshot.value != null) {
-      var currentValue = event.snapshot.value as Map<String, dynamic>;
-      currentValue.forEach((key, value) {
-        values[key] = value;
-      });
+      if (event.snapshot.value is List) {
+        var currentValue = event.snapshot.value as List<dynamic>;
+        currentValue.forEach((value) {
+          values[value] = value;
+        });
+      } else if (event.snapshot.value is Map){
+        var currentValue = event.snapshot.value as Map<String, dynamic>;
+        currentValue.forEach((key, value) {
+          values[key] = value;
+        });
+      }
     }
     return values;
   }

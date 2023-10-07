@@ -7,6 +7,8 @@ import 'package:flexing/core/common_widget/AppBar.dart';
 import 'package:flexing/core/extension/build_context_extension.dart';
 import 'package:flexing/screen/details_screen/detail_screen.dart';
 import 'package:flexing/data/model/category_item.dart';
+import 'package:flexing/core/common_widget/async_widget.dart';
+import 'package:flexing/data/repository/bags_repository.dart';
 
 class CategoryScreen extends StatelessWidget {
   final CategoryItem categoryItem;
@@ -20,29 +22,40 @@ class CategoryScreen extends StatelessWidget {
           appBar: CommonAppBar(showBackButton: true),
           body: Hero(
             tag: 'CategoryScreen-${categoryItem.name}',
-            child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                childAspectRatio:
-                    MediaQuery.of(context).size.width > 1100 ? 1 : 0.85,
-                crossAxisCount: context.getResponsiveColumnCount(),
-                mainAxisSpacing: 0,
-                crossAxisSpacing: 0,
-              ),
-              itemCount: bagItems.length,
-              itemBuilder: (ctx, index) {
-                return GestureDetector(
-                  child: ItemCard(bagItem: bagItems[index]),
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (ctx) =>
-                            DetailsScreen(bagItem: bagItems[index]),
-                      ),
-                    );
-                  },
-                );
-              },
-            ),
+            child: AsyncWidget<List<BagItem>>(
+                fetchData: BagsRepository(categoryItem.key).invoke,
+                loadingWidget: const SizedBox(
+                    width: 100,
+                    height: 100,
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    )),
+                errorWidget: SizedBox.fromSize(),
+                successData: (List<BagItem> data) {
+                  return GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      childAspectRatio:
+                          MediaQuery.of(context).size.width > 1100 ? 1 : 0.85,
+                      crossAxisCount: context.getResponsiveColumnCount(),
+                      mainAxisSpacing: 0,
+                      crossAxisSpacing: 0,
+                    ),
+                    itemCount: data.length,
+                    itemBuilder: (ctx, index) {
+                      return GestureDetector(
+                        child: ItemCard(bagItem: data[index]),
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (ctx) =>
+                                  DetailsScreen(bagItem: data[index]),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  );
+                }),
           )),
     );
   }

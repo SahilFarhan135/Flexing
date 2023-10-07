@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert';
+
 
 class ItemImageList extends StatelessWidget {
   final List<String> imageUrls;
@@ -37,8 +39,8 @@ class ItemImageList extends StatelessWidget {
               ),
               borderRadius: BorderRadius.circular(5),
             ),
-            child: Image.asset(
-              imageUrls[index],
+            child: Image.network(
+              imageUrls[index].split("&token").first,
               height: mHeight,
               width: mWidth,
               fit: BoxFit.contain,
@@ -47,5 +49,28 @@ class ItemImageList extends StatelessWidget {
         );
       },
     );
+  }
+}
+
+
+extension ImageUrlExtension on String {
+  String formatImageUrl() {
+    try {
+      Uri uri = Uri.parse(this);
+      String encodedUrl = Uri(
+        scheme: uri.scheme,
+        host: uri.host,
+        port: uri.port,
+        path: uri.path,
+        query: uri.query,
+        fragment: uri.fragment,
+      ).toString();
+
+      return encodedUrl;
+    } catch (e) {
+      // Handle parsing error or other exceptions
+      print("Error formatting URL: $e");
+      return this;
+    }
   }
 }

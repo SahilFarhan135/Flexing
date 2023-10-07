@@ -143,8 +143,8 @@ class HomeScreen extends StatelessWidget {
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (ctx) => CategoryScreen(
-                                  categoryItem: data[index]),
+                              builder: (ctx) =>
+                                  CategoryScreen(categoryItem: data[index]),
                             ),
                           );
                         },
@@ -267,14 +267,14 @@ class HomeScreen extends StatelessWidget {
 
   _trendingItemsGrid(BuildContext context) {
     return SliverToBoxAdapter(
-        child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        child:
       SizedBox(
           width: MediaQuery.of(context).size.width * 0.9,
           child: GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: MediaQuery.of(context).size.width < 600
-                ? bagItems.length - 4
+                ? bagItems.length - 1
                 : bagItems.length,
             // Number of grid items
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -301,6 +301,6 @@ class HomeScreen extends StatelessWidget {
               );
             },
           )),
-    ]));
+    );
   }
 }
