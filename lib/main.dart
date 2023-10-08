@@ -12,15 +12,17 @@ import 'main_screen.dart';
 
 Future main() async{
 WidgetsFlutterBinding.ensureInitialized();
-if(kIsWeb){
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-}
-FirebaseDatabase.instance.reference().child("users").push().set({
-  "name": "John Smith",
-  "age": 30
-});
+Firebase.initializeApp();
+FlutterError.onError = (FlutterErrorDetails details) {
+  // Handle the error globally
+  print('Global error caught: ${details.exception}');
+  // You can log the error, report it, or perform any other action here
+};
+PlatformDispatcher.instance.onError = (error, stack) {
+  print('Global error caught: ${error}');
+  return true;
+};
 runApp(MyApp());
-
 }
 
 class MyApp extends StatelessWidget{
