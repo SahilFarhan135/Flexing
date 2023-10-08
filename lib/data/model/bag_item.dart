@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 class BagItem {
   final String name;
   final String description;
@@ -7,13 +9,13 @@ class BagItem {
   final String categoryCode;
 
   BagItem(
-      this.name,
-      this.description,
-      this.imagePath,
-      this.price,
-      this.categoryCode, {
-        List<String>? colorCodes,
-      }) : colorCodes = colorCodes ?? [];
+    this.name,
+    this.description,
+    this.imagePath,
+    this.price,
+    this.categoryCode, {
+    List<String>? colorCodes,
+  }) : colorCodes = colorCodes ?? [];
 
   // Named constructor to create BagItem from JSON
   factory BagItem.fromJson(Map<String, dynamic> json) {
@@ -28,3 +30,8 @@ class BagItem {
   }
 }
 
+class ColorCodes {
+  final HashMap<String, List<String>> colors;
+
+  ColorCodes(this.colors);
+}

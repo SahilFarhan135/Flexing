@@ -1,9 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:flexing/screen/details_screen/widget/image_selection_widget.dart';
-import '../../data/model/bag_item.dart';
+import 'dart:collection';
+
 import 'package:flexing/core/common_widget/AppBar.dart';
-import 'package:flexing/data/repository/images_repository.dart';
 import 'package:flexing/core/common_widget/async_widget.dart';
+import 'package:flexing/data/repository/images_repository.dart';
+import 'package:flexing/screen/details_screen/widget/image_selection_widget.dart';
+import 'package:flutter/material.dart';
+
+import '../../data/model/bag_item.dart';
 
 class DetailsScreen extends StatefulWidget {
   final BagItem bagItem;
@@ -15,10 +18,23 @@ class DetailsScreen extends StatefulWidget {
 }
 
 class _DetailsScreenState extends State<DetailsScreen> {
-  int selectedImageIndex = 0;
-
+  int _selectedImageIndex = 0;
+  String _selectedColorCodes = "";
+  int _selectedColorCodeIndex = 0;
   static const appBarHeight = 80;
+  final HashMap<String, List<String>> bagsColors =
+      HashMap<String, List<String>>();
 
+  @override
+  void initState() {
+    super.initState();
+    ImagesRepository(widget.bagItem.categoryCode).invoke().then((value) {
+      setState(() {
+        _selectedColorCodes = value.keys.first;
+        bagsColors.addAll(value);
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,10 +48,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
   }
 
   Widget mainItemImages(double width, double height) {
-    return AsyncWidget<List<String>>(
-        fetchData: ImagesRepository(
-          widget.bagItem.categoryCode
-        ).invoke,
+    return AsyncWidget<HashMap<String, List<String>>>(
+        fetchData: ImagesRepository(widget.bagItem.categoryCode).invoke,
         loadingWidget: const SizedBox(
             width: 100,
             height: 100,
@@ -43,7 +57,9 @@ class _DetailsScreenState extends State<DetailsScreen> {
               child: CircularProgressIndicator(),
             )),
         errorWidget: SizedBox.fromSize(),
-        successData: (List<String> imageUrls) {
+        successData: (HashMap<String, List<String>> colorCodesImages) {
+          bagsColors.clear();
+          bagsColors.addAll(colorCodesImages);
           return Row(
             children: [
               Container(
@@ -52,13 +68,13 @@ class _DetailsScreenState extends State<DetailsScreen> {
                 height: height,
                 child: ItemImageList(
                   scrollDirection: Axis.vertical,
-                  imageUrls: imageUrls,
-                  selectedImageIndex: selectedImageIndex,
+                  imageUrls: bagsColors[_selectedColorCodes] ?? [],
+                  selectedImageIndex: _selectedImageIndex,
                   mWidth: width * 0.20,
                   mHeight: height * 0.25,
                   onImageTapped: (index) {
                     setState(() {
-                      selectedImageIndex = index;
+                      _selectedImageIndex = index;
                     });
                   },
                 ),
@@ -66,7 +82,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
               Container(
                   margin: const EdgeInsets.only(left: 5, right: 5),
                   child: Image.network(
-                    imageUrls.first,
+                    bagsColors[_selectedColorCodes]?.first ??
+                        widget.bagItem.imagePath,
                     fit: BoxFit.contain,
                     width: width * 0.70,
                     height: height,
@@ -78,6 +95,9 @@ class _DetailsScreenState extends State<DetailsScreen> {
 
   Widget webDesign(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    List<String> colorCodes =
+        bagsColors.values.map((list) => list.first).toList();
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -134,23 +154,23 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       style: TextStyle(fontSize: 24.0),
                     )),
                 const SizedBox(height: 15.00),
-                /*  Container(
+                Container(
                   margin: const EdgeInsets.all(15),
                   width: size.width,
                   height: size.height * 0.20,
                   child: ItemImageList(
                     scrollDirection: Axis.horizontal,
-                    imageUrls: widget.bagItem.colorCodes,
-                    selectedImageIndex: selectedImageIndex,
+                    imageUrls: colorCodes,
+                    selectedImageIndex: _selectedColorCodeIndex,
                     mWidth: size.width * 0.10,
                     mHeight: size.height * 0.10,
                     onImageTapped: (index) {
                       setState(() {
-                        selectedImageIndex = index;
+                        _selectedColorCodeIndex = index;
                       });
                     },
                   ),
-                ),*/
+                ),
                 const SizedBox(height: 15.00),
 
                 ///Product Details
@@ -169,6 +189,9 @@ class _DetailsScreenState extends State<DetailsScreen> {
 
   Widget mobileDesign(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    List<String> colorCodes =
+        bagsColors.values.map((list) => list.first).toList();
+
     return ListView(
       shrinkWrap: true,
       children: [
@@ -220,13 +243,13 @@ class _DetailsScreenState extends State<DetailsScreen> {
           height: size.height * 0.15,
           child: ItemImageList(
             scrollDirection: Axis.horizontal,
-            imageUrls: widget.bagItem.colorCodes,
-            selectedImageIndex: selectedImageIndex,
+            imageUrls: colorCodes,
+            selectedImageIndex: _selectedColorCodeIndex,
             mWidth: size.width * 0.25,
             mHeight: size.height * 0.15,
             onImageTapped: (index) {
               setState(() {
-                selectedImageIndex = index;
+                _selectedColorCodeIndex = index;
               });
             },
           ),

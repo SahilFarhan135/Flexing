@@ -17,7 +17,11 @@ class DefaultFirebaseOptions {
     if (kIsWeb) {
       return web;
     }
+
     switch (defaultTargetPlatform) {
+      case TargetPlatform.android:
+        return android;
+
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '

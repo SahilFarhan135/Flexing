@@ -22,8 +22,8 @@ class FirebaseDBManager {
         currentValue.forEach((value) {
           values[value] = value;
         });
-      } else if (event.snapshot.value is Map){
-        var currentValue = event.snapshot.value as Map<String, dynamic>;
+      } else if (event.snapshot.value is Map) {
+        var currentValue = event.snapshot.value as Map<dynamic, dynamic>;
         currentValue.forEach((key, value) {
           values[key] = value;
         });

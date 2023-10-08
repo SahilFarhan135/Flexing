@@ -1,12 +1,12 @@
 import 'dart:convert';
 
-import 'package:flexing/data/repository/firebase_db_manager.dart';
 import 'package:flexing/data/model/category_item.dart';
+import 'package:flexing/data/repository/firebase_db_manager.dart';
 
 class CategoryRepository {
   final firebaseDbManager = FirebaseDBManager();
 
-  Future<List<CategoryItem>> invoke()  async{
+  Future<List<CategoryItem>> invoke() async {
     var rawData = await firebaseDbManager.getAllData("main/categories");
 
     List<CategoryItem> categoryItems = [];

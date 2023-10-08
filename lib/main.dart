@@ -1,25 +1,25 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flexing/core/firebase_options.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flexing/screen/home_screen/home_screen.dart';
-
-import 'screen/splash_screen/splash_screen.dart';
 import 'package:flexing/data/repository/about_repository.dart';
 import 'package:flexing/data/repository/category_repository.dart';
+import 'package:flexing/screen/home_screen/home_screen.dart';
+import 'package:flutter/material.dart';
+
+import 'screen/splash_screen/splash_screen.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (kIsWeb) {
-    await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform);
-  }
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
   AboutRepository().invoke();
   CategoryRepository().invoke();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
           future: Future.delayed(const Duration(milliseconds: 1500)),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              return HomeScreen();
+              return const HomeScreen();
             } else {
               return SplashScreen();
             }

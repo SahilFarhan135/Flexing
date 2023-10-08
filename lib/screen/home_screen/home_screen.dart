@@ -1,22 +1,19 @@
-import 'package:flexing/core/utils/PlatformUtils.dart';
-import 'package:flexing/core/utils/dialog_utils.dart';
-import 'package:flexing/core/utils/UrlUtils.dart';
+import 'package:flexing/core/common_widget/async_widget.dart';
 import 'package:flexing/core/common_widget/bag_widget.dart';
 import 'package:flexing/core/common_widget/banners.dart';
-import 'package:flexing/core/common_widget/category_widget.dart';
 import 'package:flexing/core/common_widget/my_persistent_header_delegate.dart';
+import 'package:flexing/core/extension/build_context_extension.dart';
+import 'package:flexing/core/utils/UrlUtils.dart';
 import 'package:flexing/data/model/category_item.dart';
-import 'package:flexing/screen/category_screen/category_screen.dart';
 import 'package:flexing/screen/details_screen/detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../core/common_widget/about_widget.dart';
+import '../../core/common_widget/category_widget.dart';
 import '../../data/local/data.dart';
-import 'package:flexing/core/extension/build_context_extension.dart';
-import 'package:flexing/core/common_widget/async_widget.dart';
-
 import '../../data/repository/category_repository.dart';
+import '../../screen/category_screen/category_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -267,8 +264,7 @@ class HomeScreen extends StatelessWidget {
 
   _trendingItemsGrid(BuildContext context) {
     return SliverToBoxAdapter(
-        child:
-      SizedBox(
+      child: SizedBox(
           width: MediaQuery.of(context).size.width * 0.9,
           child: GridView.builder(
             shrinkWrap: true,

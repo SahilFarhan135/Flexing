@@ -1,9 +1,7 @@
+import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flexing/data/repository/firebase_db_manager.dart';
-import 'package:flexing/data/model/category_item.dart';
-import 'package:flexing/data/model/bag_item.dart';
-import 'package:flexing/data/model/bag_image_item.dart';
 
 class ImagesRepository {
   final firebaseDbManager = FirebaseDBManager();
@@ -11,12 +9,13 @@ class ImagesRepository {
 
   ImagesRepository(this.categoryKey);
 
-  Future<List<String>> invoke() async {
-    var rawData = await firebaseDbManager
-        .getAllData("main/bag_images/$categoryKey");
-    List<String> imageUrls = [];
+  Future<HashMap<String, List<String>>> invoke() async {
+    var rawData =
+        await firebaseDbManager.getAllData("main/bag_images/$categoryKey");
+    HashMap<String, List<String>> imageUrls = HashMap<String, List<String>>();
     rawData.forEach((key, value) {
-      imageUrls.add((jsonDecode(jsonEncode(value))));
+      List<String> listOfImages = List.from(jsonDecode(jsonEncode(value)));
+      imageUrls[key] = listOfImages;
     });
     print(imageUrls);
     return imageUrls;
