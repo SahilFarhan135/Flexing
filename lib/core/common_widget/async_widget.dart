@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter/material.dart';
-
 class AsyncWidget<T> extends StatelessWidget {
   final Future<T> Function() fetchData;
   final Widget loadingWidget;
   final Widget Function(T data) successData; // Changed to a function
-  final Widget errorWidget;
+  final Widget Function(String error) errorWidget;
 
   AsyncWidget({
     required this.fetchData,
@@ -27,9 +25,10 @@ class AsyncWidget<T> extends StatelessWidget {
             return loadingWidget;
           case ConnectionState.done:
             if (snapshot.hasError) {
-              return errorWidget;
+              return errorWidget(snapshot.error.toString());
             } else {
-              return successData(snapshot.data!); // Pass the data to the widget function
+              return successData(
+                  snapshot.data!); // Pass the data to the widget function
             }
         }
       },

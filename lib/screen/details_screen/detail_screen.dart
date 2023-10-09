@@ -26,6 +26,22 @@ class _DetailsScreenState extends State<DetailsScreen> {
       HashMap<String, List<String>>();
 
   @override
+  initState() {
+    super.initState();
+    ImagesRepository(widget.bagItem.categoryCode).invoke().then((value) {
+      bagsColors.clear();
+      bagsColors.addAll(value);
+      if (_selectedColorCodes.isEmpty) {
+        _selectedColorCodes = bagsColors.keys.first;
+      } else {
+        _selectedColorCodes =
+            bagsColors.keys.elementAt(_selectedColorCodeIndex);
+      }
+      setState(() {});
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     var isWeb = MediaQuery.of(context).size.width > 600;
     return SafeArea(
@@ -45,7 +61,11 @@ class _DetailsScreenState extends State<DetailsScreen> {
             child: Center(
               child: CircularProgressIndicator(),
             )),
-        errorWidget: SizedBox.fromSize(),
+        errorWidget: (String error) {
+          return Center(
+            child: Text(error),
+          );
+        },
         successData: (HashMap<String, List<String>> colorCodesImages) {
           bagsColors.clear();
           bagsColors.addAll(colorCodesImages);

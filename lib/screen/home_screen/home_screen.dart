@@ -117,13 +117,20 @@ class HomeScreen extends StatelessWidget {
           AsyncWidget<List<CategoryItem>>(
               fetchData: CategoryRepository().invoke,
               loadingWidget: const SizedBox(
-                  width: 100,
-                  height: 100,
                   child: Center(
-                    child: CircularProgressIndicator(),
-                  )),
-              errorWidget: SizedBox.fromSize(),
+                child: CircularProgressIndicator(),
+              )),
+              errorWidget: (String error) {
+                return Center(
+                  child: Text(error),
+                );
+              },
               successData: (List<CategoryItem> data) {
+                if (data.isEmpty) {
+                  return const Center(
+                    child: Text('No data found'),
+                  );
+                }
                 return LayoutBuilder(builder: (context, constraints) {
                   return GridView.builder(
                     shrinkWrap: true,

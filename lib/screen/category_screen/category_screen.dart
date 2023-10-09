@@ -1,14 +1,11 @@
-import 'package:flexing/data/model/bag_item.dart';
-import 'package:flutter/material.dart';
-import 'package:flexing/screen/details_screen/detail_screen.dart';
-import 'package:flexing/screen/category_screen/widget/item_card.dart';
-import 'package:flexing/data/local/data.dart';
 import 'package:flexing/core/common_widget/AppBar.dart';
-import 'package:flexing/core/extension/build_context_extension.dart';
-import 'package:flexing/screen/details_screen/detail_screen.dart';
-import 'package:flexing/data/model/category_item.dart';
 import 'package:flexing/core/common_widget/async_widget.dart';
+import 'package:flexing/core/extension/build_context_extension.dart';
+import 'package:flexing/data/model/bag_item.dart';
+import 'package:flexing/data/model/category_item.dart';
 import 'package:flexing/data/repository/bags_repository.dart';
+import 'package:flexing/screen/details_screen/detail_screen.dart';
+import 'package:flutter/material.dart';
 
 class CategoryScreen extends StatelessWidget {
   final CategoryItem categoryItem;
@@ -24,14 +21,23 @@ class CategoryScreen extends StatelessWidget {
             tag: 'CategoryScreen-${categoryItem.name}',
             child: AsyncWidget<List<BagItem>>(
                 fetchData: BagsRepository(categoryItem.key).invoke,
-                loadingWidget: const SizedBox(
-                    width: 100,
-                    height: 100,
+                loadingWidget: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
                     child: Center(
                       child: CircularProgressIndicator(),
                     )),
-                errorWidget: SizedBox.fromSize(),
+                errorWidget: (String error) {
+                  return Center(
+                    child: Text(error),
+                  );
+                },
                 successData: (List<BagItem> data) {
+                  if (data.isEmpty) {
+                    return Center(
+                      child: Text('No Bags found'),
+                    );
+                  }
                   return GridView.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       childAspectRatio:
@@ -74,12 +80,12 @@ class ItemCard extends StatelessWidget {
       child: LayoutBuilder(
         builder: (context, constraints) {
           double imageHeight =
-              constraints.maxWidth * 9 / 16; // Maintain a 16:9 aspect ratio
+              constraints.maxWidth * 0.9; // Maintain a 16:9 aspect ratio
           return Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Image.asset(height: imageHeight, bagItem.imagePath),
+              Image.network(height: imageHeight, bagItem.imagePath),
               Text(
                 bagItem.name,
                 style: TextStyle(
