@@ -7,6 +7,7 @@ import 'package:flexing/screen/details_screen/widget/image_selection_widget.dart
 import 'package:flutter/material.dart';
 
 import '../../data/model/bag_item.dart';
+import '../../screen/details_screen/widget/multi_images_widget.dart';
 
 class DetailsScreen extends StatefulWidget {
   final BagItem bagItem;
@@ -18,23 +19,11 @@ class DetailsScreen extends StatefulWidget {
 }
 
 class _DetailsScreenState extends State<DetailsScreen> {
-  int _selectedImageIndex = 0;
   String _selectedColorCodes = "";
   int _selectedColorCodeIndex = 0;
   static const appBarHeight = 80;
   final HashMap<String, List<String>> bagsColors =
       HashMap<String, List<String>>();
-
-  @override
-  void initState() {
-    super.initState();
-    ImagesRepository(widget.bagItem.categoryCode).invoke().then((value) {
-      setState(() {
-        _selectedColorCodes = value.keys.first;
-        bagsColors.addAll(value);
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,35 +49,14 @@ class _DetailsScreenState extends State<DetailsScreen> {
         successData: (HashMap<String, List<String>> colorCodesImages) {
           bagsColors.clear();
           bagsColors.addAll(colorCodesImages);
-          return Row(
-            children: [
-              Container(
-                margin: const EdgeInsets.only(left: 5, right: 5),
-                width: width * 0.20,
-                height: height,
-                child: ItemImageList(
-                  scrollDirection: Axis.vertical,
-                  imageUrls: bagsColors[_selectedColorCodes] ?? [],
-                  selectedImageIndex: _selectedImageIndex,
-                  mWidth: width * 0.20,
-                  mHeight: height * 0.25,
-                  onImageTapped: (index) {
-                    setState(() {
-                      _selectedImageIndex = index;
-                    });
-                  },
-                ),
-              ),
-              Container(
-                  margin: const EdgeInsets.only(left: 5, right: 5),
-                  child: Image.network(
-                    bagsColors[_selectedColorCodes]?.first ??
-                        widget.bagItem.imagePath,
-                    fit: BoxFit.contain,
-                    width: width * 0.70,
-                    height: height,
-                  )),
-            ],
+          if (_selectedColorCodes.isEmpty) {
+            _selectedColorCodes = bagsColors.keys.first;
+          } else {
+            _selectedColorCodes =
+                bagsColors.keys.elementAt(_selectedColorCodeIndex);
+          }
+          return MultiImagesWidget(
+            images: bagsColors[_selectedColorCodes] ?? [],
           );
         });
   }
