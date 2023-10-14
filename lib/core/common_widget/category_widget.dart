@@ -58,59 +58,56 @@ class _CategoryWidgetState extends State<CategoryWidget> {
   Widget build(BuildContext context) {
     final double textSize = getTextSize();
     final double containerScale = getContainerScale();
-    return Card(
-        elevation: 5.0,
-        shape: RoundedRectangleBorder(
+    return Container(
+        margin: EdgeInsets.all(5),
+        padding: EdgeInsets.all(5),
+        decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
+          shape: BoxShape.rectangle,
+          color: Color(int.parse(widget.categoryItem.color)),
         ),
-        child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.0),
-              shape: BoxShape.rectangle,
-              color: Color(int.parse(widget.categoryItem.color)),
-            ),
-            child: MouseRegion(
-              onEnter: (_) => setState(() => isHovered = true),
-              onExit: (_) => setState(() => isHovered = false),
-              child: Transform.scale(
-                  scale: containerScale,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.categoryItem.name,
-                        textAlign: TextAlign.left,
-                        style: GoogleFonts.lato(
-                          fontSize: textSize,
-                          decoration: TextDecoration.overline,
-                          decorationStyle: TextDecorationStyle.solid,
-                          decorationColor: Colors.white,
-                          shadows: const [
-                            Shadow(
-                              blurRadius: 10.0,
-                              color: Colors.white,
-                            ),
-                          ],
-                          fontWeight: FontWeight.bold,
-                          decorationThickness: 2.0,
+        child: MouseRegion(
+          onEnter: (_) => setState(() => isHovered = true),
+          onExit: (_) => setState(() => isHovered = false),
+          child: Transform.scale(
+              scale: containerScale,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    widget.categoryItem.name,
+                    textAlign: TextAlign.left,
+                    style: GoogleFonts.lato(
+                      fontSize: textSize,
+                      decoration: TextDecoration.overline,
+                      decorationStyle: TextDecorationStyle.solid,
+                      decorationColor: Colors.white,
+                      shadows: const [
+                        Shadow(
+                          blurRadius: 10.0,
                           color: Colors.white,
                         ),
-                      ),
-                      const SizedBox(height: 4.0),
-                      Text(widget.categoryItem.description,
-                          softWrap: true,
-                          style: TextStyle(
-                            color: Colors.white,
-                            overflow: TextOverflow.ellipsis,
-                            fontSize: textSize,
-                            decoration: TextDecoration.none,
-                            fontFamily: 'Lato',
-                          )),
-                      const SizedBox(height: 4.0),
-                    ],
-                  )),
-            )));
+                      ],
+                      fontWeight: FontWeight.bold,
+                      decorationThickness: 2.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 4.0),
+                  Text(widget.categoryItem.description,
+                      softWrap: true,
+                      style: TextStyle(
+                        color: Colors.white,
+                        overflow: TextOverflow.ellipsis,
+                        fontSize: textSize,
+                        decoration: TextDecoration.none,
+                        fontFamily: 'Lato',
+                      )),
+                  const SizedBox(height: 4.0),
+                ],
+              )),
+        ));
   }
 }

@@ -2,6 +2,7 @@ import 'package:flexing/core/common_widget/async_widget.dart';
 import 'package:flexing/core/common_widget/bag_widget.dart';
 import 'package:flexing/core/common_widget/banners.dart';
 import 'package:flexing/core/common_widget/my_persistent_header_delegate.dart';
+import 'package:flexing/core/common_widget/offers.dart';
 import 'package:flexing/core/extension/build_context_extension.dart';
 import 'package:flexing/core/utils/UrlUtils.dart';
 import 'package:flexing/data/model/category_item.dart';
@@ -34,6 +35,8 @@ class HomeScreen extends StatelessWidget {
             ///Header
             SliverPersistentHeader(
                 pinned: true, delegate: MyPersistentHeaderDelegate()),
+
+            SliverToBoxAdapter(child: OfferListView()),
 
             ///Banners
             const SliverToBoxAdapter(child: Banners()),
