@@ -32,7 +32,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
       bagsColors.clear();
       bagsColors.addAll(value);
       if (_selectedColorCodes.isEmpty) {
-        _selectedColorCodes = bagsColors.keys.first;
+        _selectedColorCodes = bagsColors.keys.firstOrNull ?? "";
       } else {
         _selectedColorCodes =
             bagsColors.keys.elementAt(_selectedColorCodeIndex);
@@ -46,39 +46,48 @@ class _DetailsScreenState extends State<DetailsScreen> {
     var isWeb = MediaQuery.of(context).size.width > 600;
     return SafeArea(
       child: Scaffold(
-        appBar: CommonAppBar(showBackButton: true),
+        appBar: CommonAppBar(
+          showBackButton: true,
+          onTapped: () {},
+        ),
         body: isWeb ? webDesign(context) : mobileDesign(context),
       ),
     );
   }
 
   Widget mainItemImages(double width, double height) {
-    return AsyncWidget<HashMap<String, List<String>>>(
-        fetchData: ImagesRepository(widget.bagItem.categoryCode).invoke,
-        loadingWidget: const SizedBox(
-            width: 100,
-            height: 100,
-            child: Center(
-              child: CircularProgressIndicator(),
-            )),
-        errorWidget: (String error) {
-          return Center(
-            child: Text(error),
-          );
-        },
-        successData: (HashMap<String, List<String>> colorCodesImages) {
-          bagsColors.clear();
-          bagsColors.addAll(colorCodesImages);
-          if (_selectedColorCodes.isEmpty) {
-            _selectedColorCodes = bagsColors.keys.first;
-          } else {
-            _selectedColorCodes =
-                bagsColors.keys.elementAt(_selectedColorCodeIndex);
-          }
-          return MultiImagesWidget(
-            images: bagsColors[_selectedColorCodes] ?? [],
-          );
-        });
+    return SizedBox(
+      child: AsyncWidget<HashMap<String, List<String>>>(
+          fetchData: ImagesRepository(widget.bagItem.categoryCode).invoke,
+          loadingWidget: const SizedBox(
+              width: 100,
+              height: 100,
+              child: Center(
+                child: CircularProgressIndicator(),
+              )),
+          errorWidget: (String error) {
+            return Center(
+              child: Text(error),
+            );
+          },
+          successData: (HashMap<String, List<String>> colorCodesImages) {
+            bagsColors.clear();
+            bagsColors.addAll(colorCodesImages);
+            if (_selectedColorCodes.isEmpty) {
+              _selectedColorCodes = bagsColors.keys.firstOrNull ?? "";
+            } else {
+              _selectedColorCodes =
+                  bagsColors.keys.elementAt(_selectedColorCodeIndex);
+            }
+            return MultiImagesWidget(
+              images: bagsColors[_selectedColorCodes] ?? [],
+              mHeight: height,
+              mWidth: width,
+            );
+          }),
+      height: height,
+      width: width,
+    );
   }
 
   Widget webDesign(BuildContext context) {
@@ -180,80 +189,84 @@ class _DetailsScreenState extends State<DetailsScreen> {
     List<String> colorCodes =
         bagsColors.values.map((list) => list.first).toList();
 
-    return ListView(
-      shrinkWrap: true,
-      children: [
-        mainItemImages(size.width, size.height * 0.5),
-
-        const SizedBox(
-          height: 40,
-        ),
-
-        ///Item Name
-        const Padding(
-          padding: EdgeInsets.only(left: 15, right: 10),
-          child: Text(
-            'Stylish Leather Bag', // Replace with your item name
-            style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const SizedBox(
+            height: 20,
           ),
-        ),
-        const SizedBox(height: 15.0),
+          mainItemImages(size.width, size.height * 0.5),
 
-        /// Item Price
-        const Padding(
+          const SizedBox(
+            height: 40,
+          ),
+
+          ///Item Name
+          const Padding(
             padding: EdgeInsets.only(left: 15, right: 10),
             child: Text(
-              '\$99.99', // Replace with your item price
-              style: TextStyle(fontSize: 28.0, color: Colors.green),
-            )),
-        const SizedBox(height: 15.0),
-
-        /// Item Description
-        const Padding(
-            padding: EdgeInsets.only(left: 15, right: 10),
-            child: Text(
-              'A fashionable and spacious leather bag suitable for any occasion. '
-              'It features multiple compartments and a durable design.',
-              style: TextStyle(fontSize: 16.0),
-            )),
-        const SizedBox(height: 15.0),
-
-        ///Colors
-        const Padding(
-            padding: EdgeInsets.only(left: 15, right: 15),
-            child: Text(
-              'Colors',
-              style: TextStyle(fontSize: 20.0),
-            )),
-        const SizedBox(height: 15.0),
-        Container(
-          margin: const EdgeInsets.only(left: 5, right: 5),
-          height: size.height * 0.15,
-          child: ItemImageList(
-            scrollDirection: Axis.horizontal,
-            imageUrls: colorCodes,
-            selectedImageIndex: _selectedColorCodeIndex,
-            mWidth: size.width * 0.25,
-            mHeight: size.height * 0.15,
-            onImageTapped: (index) {
-              setState(() {
-                _selectedColorCodeIndex = index;
-              });
-            },
+              'Stylish Leather Bag', // Replace with your item name
+              style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+            ),
           ),
-        ),
+          const SizedBox(height: 15.0),
 
-        const SizedBox(height: 20.00),
+          /// Item Price
+          const Padding(
+              padding: EdgeInsets.only(left: 15, right: 10),
+              child: Text(
+                '\$99.99', // Replace with your item price
+                style: TextStyle(fontSize: 28.0, color: Colors.green),
+              )),
+          const SizedBox(height: 15.0),
 
-        ///Product Details
-        const Padding(
-            padding: EdgeInsets.only(left: 20, right: 15),
-            child: Text(
-              'Product Details',
-              style: TextStyle(fontSize: 20.0),
-            )),
-        ProductDetailsScreen()
-      ],
+          /// Item Description
+          const Padding(
+              padding: EdgeInsets.only(left: 15, right: 10),
+              child: Text(
+                'A fashionable and spacious leather bag suitable for any occasion. '
+                'It features multiple compartments and a durable design.',
+                style: TextStyle(fontSize: 16.0),
+              )),
+          const SizedBox(height: 15.0),
+
+          ///Colors
+          const Padding(
+              padding: EdgeInsets.only(left: 15, right: 15),
+              child: Text(
+                'Colors',
+                style: TextStyle(fontSize: 20.0),
+              )),
+          const SizedBox(height: 15.0),
+          Container(
+            margin: const EdgeInsets.only(left: 5, right: 5),
+            height: size.height * 0.15,
+            child: ItemImageList(
+              scrollDirection: Axis.horizontal,
+              imageUrls: colorCodes,
+              selectedImageIndex: _selectedColorCodeIndex,
+              mWidth: size.width * 0.25,
+              mHeight: size.height * 0.15,
+              onImageTapped: (index) {
+                setState(() {
+                  _selectedColorCodeIndex = index;
+                });
+              },
+            ),
+          ),
+
+          const SizedBox(height: 20.00),
+
+          ///Product Details
+          const Padding(
+              padding: EdgeInsets.only(left: 20, right: 15),
+              child: Text(
+                'Product Details',
+                style: TextStyle(fontSize: 20.0),
+              )),
+          ProductDetailsScreen()
+        ],
+      ),
     );
   }
 }

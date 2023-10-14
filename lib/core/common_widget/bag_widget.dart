@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../data/model/bag_item.dart';
 
@@ -10,50 +9,30 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
-        final cardWidth = constraints.maxWidth; // Calculate card width
-        final imageHeight = cardWidth * 0.8; // Maintain aspect ratio
-        final nameFontSize = cardWidth * 0.08;
-        final descriptionFontSize = cardWidth * 0.06;
-        return Expanded(
-            flex: 1,
-            child: Container(
-                color: Colors.grey[200],
-                margin: const EdgeInsets.all(10.0),
-                child: ListView(
-                  shrinkWrap: true,
-                  children: [
-                    SizedBox(
-                      height: 10.0,
-                    ),
-
-                    ///Product Image
-                    Container(
-                      height: imageHeight,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage(bagItem.imagePath),
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    Center(
-                        child: Text(
-                      bagItem.name,
-                      style: GoogleFonts.lato(
-                        color: Colors.black,
-                        fontStyle: FontStyle.italic,
-                        fontSize: nameFontSize,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )),
-                  ],
-                )));
-      },
+    return Card(
+      elevation: 5,
+      margin: EdgeInsets.all(5),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          double imageHeight =
+              constraints.maxWidth * 0.9; // Maintain a 16:9 aspect ratio
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Image.network(height: imageHeight, bagItem.imagePath),
+              Text(
+                bagItem.name,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          );
+        },
+      ),
     );
+    ;
   }
 }

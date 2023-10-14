@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool showBackButton;
+  final Function onTapped;
 
-  CommonAppBar({required this.showBackButton});
+  CommonAppBar({required this.showBackButton, required this.onTapped});
 
   @override
   Size get preferredSize =>
-      const Size.fromHeight(70.0); // Adjust the height as needed
+      const Size.fromHeight(65.0); // Adjust the height as needed
 
   @override
   Widget build(BuildContext context) {
@@ -15,63 +17,72 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: Colors.white,
       elevation: 10, // You may want to adjust this based on your design
       automaticallyImplyLeading: false, // Remove back button
-      flexibleSpace: Container(
-        padding: const EdgeInsets.all(0.0),
+      flexibleSpace: Card(
+        color: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(0.0),
+        ),
+        margin: const EdgeInsets.all(0.0),
         child: Container(
-          decoration: const BoxDecoration(),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  SizedBox(
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width * 0.01,
+          width: MediaQuery.of(context).size.width,
+          height: 65.0,
+          padding: const EdgeInsets.only(right: 0.0, top: 1.0, bottom: 1.0),
+          child:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Row(
+              children: [
+                showBackButton
+                    ? IconButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        icon: const Icon(Icons.arrow_back_sharp))
+                    : SizedBox.shrink(),
+                showBackButton
+                    ? SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.005,
+                      )
+                    : SizedBox.shrink(),
+                showBackButton
+                    ? SizedBox.shrink()
+                    : IconButton(
+                        onPressed: () {}, icon: const Icon(Icons.menu_open)),
+                Image.asset(
+                  scale: 1.0,
+                  width: 40,
+                  height: 40,
+                  filterQuality: FilterQuality.high,
+                  "assets/images/flex.png",
+                  fit: BoxFit.cover,
+                ),
+                Text(
+                  "FLEXiNG",
+                  style: GoogleFonts.zcoolKuaiLe(
+                    fontSize: 20,
+                    fontStyle: FontStyle.normal,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
                   ),
-
-                  showBackButton
-                      ? IconButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      }, icon: const Icon(Icons.arrow_back_sharp))
-                      : SizedBox.shrink(),
-
-                  showBackButton
-                      ?  SizedBox(
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width * 0.005,
-                  )
-                      : SizedBox.shrink(),
-                  Image.asset(
-                    "assets/images/logo_new.png",
-                    scale: 1.0,
-                    filterQuality: FilterQuality.high,
-                    fit: BoxFit.cover,
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
-                  SizedBox(
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width * 0.03,
-                  )
-                ],
-              ),
-            ],
-          ),
+                )
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                IconButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: () {},
+                    icon: const Icon(Icons.search)),
+                IconButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: () {},
+                    icon: const Icon(Icons.favorite_border)),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.03,
+                )
+              ],
+            )
+          ]),
         ),
       ),
     );

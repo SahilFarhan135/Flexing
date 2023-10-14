@@ -1,5 +1,6 @@
 import 'package:flexing/core/common_widget/AppBar.dart';
 import 'package:flexing/core/common_widget/async_widget.dart';
+import 'package:flexing/core/common_widget/bag_widget.dart';
 import 'package:flexing/core/extension/build_context_extension.dart';
 import 'package:flexing/data/model/bag_item.dart';
 import 'package:flexing/data/model/category_item.dart';
@@ -16,7 +17,7 @@ class CategoryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          appBar: CommonAppBar(showBackButton: true),
+          appBar: CommonAppBar(showBackButton: true, onTapped: () {}),
           body: Hero(
             tag: 'CategoryScreen-${categoryItem.name}',
             child: AsyncWidget<List<BagItem>>(
@@ -49,7 +50,7 @@ class CategoryScreen extends StatelessWidget {
                     itemCount: data.length,
                     itemBuilder: (ctx, index) {
                       return GestureDetector(
-                        child: ItemCard(bagItem: data[index]),
+                        child: ProductCard(bagItem: data[index]),
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
@@ -63,40 +64,6 @@ class CategoryScreen extends StatelessWidget {
                   );
                 }),
           )),
-    );
-  }
-}
-
-class ItemCard extends StatelessWidget {
-  final BagItem bagItem;
-
-  ItemCard({required this.bagItem});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      margin: EdgeInsets.all(5),
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          double imageHeight =
-              constraints.maxWidth * 0.9; // Maintain a 16:9 aspect ratio
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Image.network(height: imageHeight, bagItem.imagePath),
-              Text(
-                bagItem.name,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          );
-        },
-      ),
     );
   }
 }

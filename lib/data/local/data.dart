@@ -3,7 +3,11 @@ import 'package:flexing/data/model/category_item.dart';
 import '../model/bag_item.dart';
 
 final bagItems = [
-  BagItem('Bag 1', 'Description of Bag 1', 'assets/images/newbag1.jpeg'," 990.99",
+  BagItem(
+      'Bag 1',
+      'Description of Bag 1',
+      'https://firebasestorage.googleapis.com/v0/b/flexing-a499f.appspot.com/o/bags%2FCOLLEGE%2Funisex_bag_black%2Funisex_bag_black1.webp?alt=media&token=74fac786-fc5c-47b7-b436-20a927a447fe&_gl=1*1x3c2zl*_ga*MjM4MTYxODMwLjE2OTMwMzM2Mzg.*_ga_CW55HF8NVT*MTY5NjM1MzMwOS44LjEuMTY5NjM1Mzg2NS4yNS4wLjA.',
+      " 990.99",
       'SCHOOL',
       colorCodes: ['BAG1_RED']),
   BagItem('Bag 12', 'Description of Bag 1', 'assets/images/newbag2.jpeg',

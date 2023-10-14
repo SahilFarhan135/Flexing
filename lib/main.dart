@@ -4,6 +4,7 @@ import 'package:flexing/data/repository/about_repository.dart';
 import 'package:flexing/data/repository/category_repository.dart';
 import 'package:flexing/screen/home_screen/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'screen/splash_screen/splash_screen.dart';
 
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
     return MaterialApp(
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
