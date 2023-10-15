@@ -59,34 +59,22 @@ class AboutPage extends StatelessWidget {
 
           ///About Us description
 
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.only(left: 20, right: 20),
-                margin: const EdgeInsets.only(left: 20, right: 20),
-                width: MediaQuery.of(context).size.width * 0.5,
-                child: Image.network(
-                  aboutDetail.imageUrl,
-                ),
+          Container(
+            padding: const EdgeInsets.only(left: 20, right: 20),
+            margin: const EdgeInsets.only(left: 20, right: 20),
+            width: MediaQuery.of(context).size.width * 0.7,
+            child: Text(
+              aboutText(context),
+              style: GoogleFonts.mulish(
+                fontSize: isAndroid ? 14 : 22,
+                color: Colors.black,
+                fontStyle: FontStyle.normal,
+                fontWeight: FontWeight.w300,
               ),
-              Container(
-                padding: const EdgeInsets.only(left: 20, right: 20),
-                margin: const EdgeInsets.only(left: 20, right: 20),
-                width: MediaQuery.of(context).size.width * 0.4,
-                child: Text(
-                  aboutText(context),
-                  style: GoogleFonts.mulish(
-                    fontSize: isAndroid ? 14 : 22,
-                    color: Colors.black,
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.w300,
-                  ),
-                ),
-              )
-            ],
+            ),
           ),
 
-          SizedBox(height: isSmallSizeDevice(context) ? 10.0 : 20.0),
+          SizedBox(height: isSmallSizeDevice(context) ? 12.0 : 20.0),
 
           ///Contact Us
           Text(
@@ -98,7 +86,7 @@ class AboutPage extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: isSmallSizeDevice(context) ? 10.0 : 20.0),
+          SizedBox(height: isSmallSizeDevice(context) ? 12.0 : 20.0),
 
           ///Email
           TextButton(
@@ -114,7 +102,7 @@ class AboutPage extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: isSmallSizeDevice(context) ? 10.0 : 20.0),
+          SizedBox(height: isSmallSizeDevice(context) ? 12.0 : 20.0),
 
           ///Phone Number
           TextButton(
@@ -130,7 +118,44 @@ class AboutPage extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: isSmallSizeDevice(context) ? 10.0 : 20.0),
+          SizedBox(height: isSmallSizeDevice(context) ? 12.0 : 20.0),
+
+          ///insta
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Follow Us on ',
+                style: GoogleFonts.mulish(
+                  fontStyle: FontStyle.normal,
+                  fontSize: 20,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Image.asset(
+                "assets/images/insta.png",
+                height: 40,
+                width: 40,
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Text(
+                '@FlexingBags',
+                style: GoogleFonts.mulish(
+                  fontSize: 20,
+                  fontStyle: FontStyle.normal,
+                  textStyle: const TextStyle(
+                    decoration: TextDecoration.underline,
+                  ),
+                  color: Colors.blue,
+                ),
+              ),
+            ],
+          ),
+
+          SizedBox(height: isSmallSizeDevice(context) ? 12.0 : 20.0),
 
           ///Address
           TextButton(

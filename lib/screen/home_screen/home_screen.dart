@@ -87,9 +87,6 @@ class HomeScreen extends StatelessWidget {
             ///banner2
             _bannerSliver(context, showMargin: true),
 
-            ///instagram
-            _instagramSliver(),
-
             ///about us
             _aboutSliver(),
           ],
@@ -298,46 +295,6 @@ class HomeScreen extends StatelessWidget {
         child: Column(children: [
       const SizedBox(
         height: 50,
-      ),
-      Center(
-        child: TextButton(
-          onPressed: () {
-            launchInstagram();
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Follow Us on ',
-                style: GoogleFonts.mulish(
-                  fontStyle: FontStyle.normal,
-                  fontSize: 20,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Image.asset(
-                "assets/images/insta.png",
-                height: 40,
-                width: 40,
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              Text(
-                '@FlexingBags',
-                style: GoogleFonts.mulish(
-                  fontSize: 20,
-                  fontStyle: FontStyle.normal,
-                  textStyle: const TextStyle(
-                    decoration: TextDecoration.underline,
-                  ),
-                  color: Colors.blue,
-                ),
-              ),
-            ],
-          ),
-        ),
       ),
       const SizedBox(
         height: 10,
