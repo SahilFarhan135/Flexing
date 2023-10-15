@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 class AsyncWidget<T> extends StatelessWidget {
@@ -25,6 +27,7 @@ class AsyncWidget<T> extends StatelessWidget {
             return loadingWidget;
           case ConnectionState.done:
             if (snapshot.hasError) {
+              log("Error in getting Async: ${successData.toString()} ${snapshot.error}");
               return errorWidget(snapshot.error.toString());
             } else {
               return successData(

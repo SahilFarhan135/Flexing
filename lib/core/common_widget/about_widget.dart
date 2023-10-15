@@ -120,6 +120,23 @@ class AboutPage extends StatelessWidget {
           ),
           SizedBox(height: isSmallSizeDevice(context) ? 12.0 : 20.0),
 
+          ///Address
+          TextButton(
+            onPressed: () {},
+            child: Text(
+              textAlign: TextAlign.center,
+              'Address: ${aboutDetail.address}',
+              style: GoogleFonts.mulish(
+                fontSize: isSmallSizeDevice(context) ? 17.0 : 25.0,
+                fontStyle: FontStyle.normal,
+                color: Colors.black,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+
+          SizedBox(height: isSmallSizeDevice(context) ? 12.0 : 20.0),
+
           ///insta
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -156,21 +173,6 @@ class AboutPage extends StatelessWidget {
           ),
 
           SizedBox(height: isSmallSizeDevice(context) ? 12.0 : 20.0),
-
-          ///Address
-          TextButton(
-            onPressed: () {},
-            child: Text(
-              textAlign: TextAlign.center,
-              'Address: ${aboutDetail.address}',
-              style: GoogleFonts.mulish(
-                fontSize: isSmallSizeDevice(context) ? 17.0 : 25.0,
-                fontStyle: FontStyle.normal,
-                color: Colors.black,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
         ],
       ),
     ); // Removed the extra closing parenthesis here

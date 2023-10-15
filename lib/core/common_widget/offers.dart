@@ -60,7 +60,7 @@ class OfferCard extends StatelessWidget {
                     border: Border.all(width: 1, color: Colors.teal.shade200),
                     image: DecorationImage(
                       image: NetworkImage(categoryItem.imagePath),
-                      fit: BoxFit.cover,
+                      fit: BoxFit.contain,
                     ),
                   ),
                 ),

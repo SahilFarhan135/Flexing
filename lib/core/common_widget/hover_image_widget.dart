@@ -24,6 +24,7 @@ class _HoverImageWidgetState extends State<HoverImageWidget> {
         height: isHovered ? 240 : 200, // Adjust the height as needed
         child: Image.network(
           widget.imagePath,
+          alignment: Alignment.center,
           fit: BoxFit.contain,
         ),
       ),

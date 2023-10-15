@@ -5,6 +5,7 @@ import 'package:flexing/core/common_widget/my_persistent_header_delegate.dart';
 import 'package:flexing/core/common_widget/offers.dart';
 import 'package:flexing/core/utils/UrlUtils.dart';
 import 'package:flexing/data/model/about_detail.dart';
+import 'package:flexing/data/model/bag_item.dart';
 import 'package:flexing/data/model/category_item.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,9 +13,10 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../core/common_widget/about_widget.dart';
 import '../../data/local/data.dart';
 import '../../data/repository/about_repository.dart';
+import '../../data/repository/bags_repository.dart';
 import '../../data/repository/banner_repository.dart';
 import '../../data/repository/category_repository.dart';
-import '../../screen/category_screen/category_screen.dart';
+import '../../screen/details_screen/detail_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -77,9 +79,6 @@ class HomeScreen extends StatelessWidget {
                     )),
               ),
             ),
-
-            /*///categories
-            _categoriesSliver(),*/
 
             ///best seller
             _bestSellerSliver(),
@@ -163,8 +162,8 @@ class HomeScreen extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          AsyncWidget<List<CategoryItem>>(
-              fetchData: CategoryRepository().invoke,
+          AsyncWidget<List<BagItem>>(
+              fetchData: BagsRepository("TRENDING").invoke,
               loadingWidget: const SizedBox(
                   child: Center(
                 child: CircularProgressIndicator(),
@@ -174,7 +173,7 @@ class HomeScreen extends StatelessWidget {
                   child: Text(error),
                 );
               },
-              successData: (List<CategoryItem> data) {
+              successData: (List<BagItem> data) {
                 if (data.isEmpty) {
                   return const Center(
                     child: Text('No data found'),
@@ -190,14 +189,14 @@ class HomeScreen extends StatelessWidget {
                       childAspectRatio: constraints.maxWidth > 600 ? 1 : 1,
                       mainAxisSpacing: 10,
                     ),
-                    itemCount: 8,
+                    itemCount: data.length,
                     itemBuilder: (BuildContext context, int index) {
                       return InkWell(
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (ctx) =>
-                                  CategoryScreen(categoryItem: data[index]),
+                                  DetailsScreen(bagItem: data[index]),
                             ),
                           );
                         },
@@ -236,8 +235,8 @@ class HomeScreen extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          AsyncWidget<List<CategoryItem>>(
-              fetchData: CategoryRepository().invoke,
+          AsyncWidget<List<BagItem>>(
+              fetchData: BagsRepository("BESTSELLER").invoke,
               loadingWidget: const SizedBox(
                   child: Center(
                 child: CircularProgressIndicator(),
@@ -247,7 +246,7 @@ class HomeScreen extends StatelessWidget {
                   child: Text(error),
                 );
               },
-              successData: (List<CategoryItem> data) {
+              successData: (List<BagItem> data) {
                 if (data.isEmpty) {
                   return const Center(
                     child: Text('No data found'),
@@ -263,14 +262,14 @@ class HomeScreen extends StatelessWidget {
                       childAspectRatio: constraints.maxWidth > 600 ? 1 : 1,
                       mainAxisSpacing: 10,
                     ),
-                    itemCount: 8,
+                    itemCount: data.length,
                     itemBuilder: (BuildContext context, int index) {
                       return InkWell(
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (ctx) =>
-                                  CategoryScreen(categoryItem: data[index]),
+                                  DetailsScreen(bagItem: data[index]),
                             ),
                           );
                         },
