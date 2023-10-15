@@ -1,49 +1,23 @@
+import 'package:flexing/data/model/category_item.dart';
+import 'package:flexing/screen/category_screen/category_screen.dart';
 import 'package:flutter/material.dart';
 
-class OfferListView extends StatelessWidget {
-  final List<Offer> offers = [
-    Offer(
-      title: 'Laptop Bags',
-      description: 'Get exciting discounts on electronics. Limited time offer!',
-      imageUrl: 'assets/images/newbag1.jpeg',
-    ),
-    Offer(
-      title: 'School Bags',
-      description:
-          'Hurry! Grab the latest fashion trends at unbeatable prices.',
-      imageUrl: 'assets/images/newbag1.jpeg',
-    ),
-    Offer(
-      title: 'School Bags',
-      description:
-          'Hurry! Grab the latest fashion trends at unbeatable prices.',
-      imageUrl: 'assets/images/newbag1.jpeg',
-    ),
-    Offer(
-      title: 'School Bags',
-      description:
-          'Hurry! Grab the latest fashion trends at unbeatable prices.',
-      imageUrl: 'assets/images/newbag1.jpeg',
-    ),
-    Offer(
-      title: 'School Bags',
-      description:
-          'Hurry! Grab the latest fashion trends at unbeatable prices.',
-      imageUrl: 'assets/images/newbag1.jpeg',
-    ),
-    // Add more offers as needed
-  ];
+class OfferOrCategoryListView extends StatelessWidget {
+  final List<CategoryItem> categoryItems;
+
+  const OfferOrCategoryListView({Key? key, required this.categoryItems})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 150,
+      height: 130,
       child: ListView.builder(
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
-        itemCount: offers.length,
+        itemCount: categoryItems.length,
         itemBuilder: (context, index) {
-          return OfferCard(offer: offers[index]);
+          return OfferCard(categoryItem: categoryItems[index]);
         },
       ),
     );
@@ -51,60 +25,59 @@ class OfferListView extends StatelessWidget {
 }
 
 class OfferCard extends StatelessWidget {
-  final Offer offer;
+  final CategoryItem categoryItem;
 
-  OfferCard({required this.offer});
+  OfferCard({required this.categoryItem});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          SizedBox(
-            height: 5,
+    return InkWell(
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (ctx) => CategoryScreen(categoryItem: categoryItem),
           ),
-          Container(
-            width: 100,
-            height: 80,
+        );
+      },
+      child: Hero(
+          tag: 'Category-${categoryItem.name}',
+          child: Container(
+            padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(width: 1, color: Colors.teal.shade200),
-              image: DecorationImage(
-                image: AssetImage(offer.imageUrl),
-                fit: BoxFit.cover,
-              ),
+              borderRadius: BorderRadius.circular(20),
             ),
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          Text(
-            offer.title,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 5,
+                ),
+                Container(
+                  width: 100,
+                  height: 80,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(width: 1, color: Colors.teal.shade200),
+                    image: DecorationImage(
+                      image: NetworkImage(categoryItem.imagePath),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  categoryItem.name,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
+          )),
     );
   }
-}
-
-class Offer {
-  final String title;
-  final String description;
-  final String imageUrl;
-
-  Offer({
-    required this.title,
-    required this.description,
-    required this.imageUrl,
-  });
 }

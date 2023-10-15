@@ -20,6 +20,7 @@ class FirebaseDBManager {
       if (event.snapshot.value is List) {
         var currentValue = event.snapshot.value as List<dynamic>;
         currentValue.forEach((value) {
+          if (value == null) return;
           values[value] = value;
         });
       } else if (event.snapshot.value is Map) {

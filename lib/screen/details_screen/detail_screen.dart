@@ -114,10 +114,10 @@ class _DetailsScreenState extends State<DetailsScreen> {
                 const SizedBox(height: 40),
 
                 ///Item name
-                const Padding(
+                Padding(
                   padding: EdgeInsets.only(left: 15, right: 15),
                   child: Text(
-                    'Stylish Leather Bag', // Replace with your item name
+                    widget.bagItem.name, // Replace with your item name
                     style:
                         TextStyle(fontSize: 28.0, fontWeight: FontWeight.bold),
                   ),
@@ -125,20 +125,19 @@ class _DetailsScreenState extends State<DetailsScreen> {
                 const SizedBox(height: 15.0),
 
                 /// Item Price
-                const Padding(
+                Padding(
                     padding: EdgeInsets.only(left: 15, right: 15),
                     child: Text(
-                      '\$99.99', // Replace with your item price
+                      widget.bagItem.price, // Replace with your item price
                       style: TextStyle(fontSize: 28.0, color: Colors.green),
                     )),
                 const SizedBox(height: 15.0),
 
                 /// Item Description
-                const Padding(
+                Padding(
                     padding: EdgeInsets.only(left: 15, right: 15),
                     child: Text(
-                      'A fashionable and spacious leather bag suitable for any occasion. '
-                      'It features multiple compartments and a durable design.',
+                      widget.bagItem.description,
                       style: TextStyle(fontSize: 20.0),
                     )),
                 const SizedBox(height: 15.00),
@@ -202,30 +201,29 @@ class _DetailsScreenState extends State<DetailsScreen> {
           ),
 
           ///Item Name
-          const Padding(
+          Padding(
             padding: EdgeInsets.only(left: 15, right: 10),
             child: Text(
-              'Stylish Leather Bag', // Replace with your item name
+              widget.bagItem.name, // Replace with your item name
               style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
             ),
           ),
           const SizedBox(height: 15.0),
 
           /// Item Price
-          const Padding(
+          Padding(
               padding: EdgeInsets.only(left: 15, right: 10),
               child: Text(
-                '\$99.99', // Replace with your item price
+                widget.bagItem.price, // Replace with your item price
                 style: TextStyle(fontSize: 28.0, color: Colors.green),
               )),
           const SizedBox(height: 15.0),
 
           /// Item Description
-          const Padding(
+          Padding(
               padding: EdgeInsets.only(left: 15, right: 10),
               child: Text(
-                'A fashionable and spacious leather bag suitable for any occasion. '
-                'It features multiple compartments and a durable design.',
+                widget.bagItem.description,
                 style: TextStyle(fontSize: 16.0),
               )),
           const SizedBox(height: 15.0),

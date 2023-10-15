@@ -20,7 +20,9 @@ class MyPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Row(
             children: [
-              IconButton(onPressed: () {}, icon: const Icon(Icons.menu_open)),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.005,
+              ),
               Image.asset(
                 scale: 1.0,
                 width: 40,

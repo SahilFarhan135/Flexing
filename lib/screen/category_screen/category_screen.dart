@@ -1,12 +1,13 @@
 import 'package:flexing/core/common_widget/AppBar.dart';
 import 'package:flexing/core/common_widget/async_widget.dart';
-import 'package:flexing/core/common_widget/bag_widget.dart';
 import 'package:flexing/core/extension/build_context_extension.dart';
 import 'package:flexing/data/model/bag_item.dart';
 import 'package:flexing/data/model/category_item.dart';
 import 'package:flexing/data/repository/bags_repository.dart';
 import 'package:flexing/screen/details_screen/detail_screen.dart';
 import 'package:flutter/material.dart';
+
+import '../../core/common_widget/best_seller_widget.dart';
 
 class CategoryScreen extends StatelessWidget {
   final CategoryItem categoryItem;
@@ -50,7 +51,10 @@ class CategoryScreen extends StatelessWidget {
                     itemCount: data.length,
                     itemBuilder: (ctx, index) {
                       return GestureDetector(
-                        child: ProductCard(bagItem: data[index]),
+                        child: BestSellerWidget(
+                          imagePath: data[index].imagePath,
+                          onTap: () {},
+                        ),
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(

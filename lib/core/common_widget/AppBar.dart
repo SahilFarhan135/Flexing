@@ -43,10 +43,6 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
                         width: MediaQuery.of(context).size.width * 0.005,
                       )
                     : SizedBox.shrink(),
-                showBackButton
-                    ? SizedBox.shrink()
-                    : IconButton(
-                        onPressed: () {}, icon: const Icon(Icons.menu_open)),
                 Image.asset(
                   scale: 1.0,
                   width: 40,

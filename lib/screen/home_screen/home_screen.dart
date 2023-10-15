@@ -1,18 +1,18 @@
 import 'package:flexing/core/common_widget/async_widget.dart';
-import 'package:flexing/core/common_widget/bag_widget.dart';
 import 'package:flexing/core/common_widget/banners.dart';
+import 'package:flexing/core/common_widget/best_seller_widget.dart';
 import 'package:flexing/core/common_widget/my_persistent_header_delegate.dart';
 import 'package:flexing/core/common_widget/offers.dart';
-import 'package:flexing/core/extension/build_context_extension.dart';
 import 'package:flexing/core/utils/UrlUtils.dart';
+import 'package:flexing/data/model/about_detail.dart';
 import 'package:flexing/data/model/category_item.dart';
-import 'package:flexing/screen/details_screen/detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../core/common_widget/about_widget.dart';
-import '../../core/common_widget/category_widget.dart';
 import '../../data/local/data.dart';
+import '../../data/repository/about_repository.dart';
+import '../../data/repository/banner_repository.dart';
 import '../../data/repository/category_repository.dart';
 import '../../screen/category_screen/category_screen.dart';
 
@@ -36,10 +36,10 @@ class HomeScreen extends StatelessWidget {
             SliverPersistentHeader(
                 pinned: true, delegate: MyPersistentHeaderDelegate()),
 
-            SliverToBoxAdapter(child: OfferListView()),
+            _categoryOrOfferSliver(context),
 
             ///Banners
-            const SliverToBoxAdapter(child: Banners()),
+            _bannerSliver(context),
 
             ///space
             const SliverToBoxAdapter(
@@ -51,10 +51,7 @@ class HomeScreen extends StatelessWidget {
                     ))),
 
             ///trending details
-            _trendingItem(context),
-
-            ///trending items
-            _trendingItemsGrid(context),
+            _trendingSliver(),
 
             ///trending item view more
             SliverToBoxAdapter(
@@ -81,23 +78,76 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
 
-            ///categories
-            _categoriesSliver(),
+            /*///categories
+            _categoriesSliver(),*/
+
+            ///best seller
+            _bestSellerSliver(),
+
+            ///banner2
+            _bannerSliver(context, showMargin: true),
 
             ///instagram
             _instagramSliver(),
 
-            ///about page
-            SliverToBoxAdapter(
-              child: AboutPage(),
-            ),
+            ///about us
+            _aboutSliver(),
           ],
         ),
       ),
     ));
   }
 
-  SliverToBoxAdapter _categoriesSliver() {
+  SliverToBoxAdapter _bannerSliver(BuildContext context,
+      {bool showMargin = false}) {
+    var isWeb = MediaQuery.of(context).size.width > 1000;
+    return SliverToBoxAdapter(
+        child: AsyncWidget<List<String>>(
+            fetchData: BannerRepository(isWeb: isWeb).invoke,
+            loadingWidget: const SizedBox(
+                child: Center(
+              child: CircularProgressIndicator(),
+            )),
+            errorWidget: (String error) {
+              return Center(
+                child: Text(error),
+              );
+            },
+            successData: (List<String> data) {
+              if (data.isEmpty) {
+                return const Center(
+                  child: Text('No data found'),
+                );
+              }
+              return Banners(bannerImages: data, showMargin: showMargin);
+            }));
+  }
+
+  SliverToBoxAdapter _categoryOrOfferSliver(BuildContext context) {
+    var isWeb = MediaQuery.of(context).size.width > 1000;
+    return SliverToBoxAdapter(
+        child: AsyncWidget<List<CategoryItem>>(
+            fetchData: CategoryRepository().invoke,
+            loadingWidget: const SizedBox(
+                child: Center(
+              child: CircularProgressIndicator(),
+            )),
+            errorWidget: (String error) {
+              return Center(
+                child: Text(error),
+              );
+            },
+            successData: (List<CategoryItem> data) {
+              if (data.isEmpty) {
+                return const Center(
+                  child: Text('No data found'),
+                );
+              }
+              return OfferOrCategoryListView(categoryItems: data);
+            }));
+  }
+
+  SliverToBoxAdapter _trendingSliver() {
     return SliverToBoxAdapter(
       child: Column(
         children: [
@@ -105,7 +155,7 @@ class HomeScreen extends StatelessWidget {
             height: 30,
           ),
           Text(
-            ' Categories ',
+            ' Trending ',
             style: GoogleFonts.mulish(
               fontSize: 20,
               fontStyle: FontStyle.normal,
@@ -138,12 +188,12 @@ class HomeScreen extends StatelessWidget {
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: constraints.maxWidth > 600 ? 3 : 2,
+                      crossAxisCount: constraints.maxWidth > 600 ? 4 : 2,
                       // Adjust the number of columns based on screen width
-                      childAspectRatio: constraints.maxWidth > 600 ? 1.5 : 1,
-                      mainAxisSpacing: 0,
+                      childAspectRatio: constraints.maxWidth > 600 ? 1 : 1,
+                      mainAxisSpacing: 10,
                     ),
-                    itemCount: data.length,
+                    itemCount: 8,
                     itemBuilder: (BuildContext context, int index) {
                       return InkWell(
                         onTap: () {
@@ -155,9 +205,82 @@ class HomeScreen extends StatelessWidget {
                           );
                         },
                         child: Hero(
-                            tag: 'CategoryScreen-${data[index].name}',
-                            child: CategoryWidget(
-                              categoryItem: data[index],
+                            tag: 'BestSeller-${data[index].name}',
+                            child: BestSellerWidget(
+                              imagePath: data[index].imagePath,
+                              onTap: () {},
+                            )),
+                      );
+                    },
+                  );
+                });
+              }),
+        ],
+      ),
+    );
+  }
+
+  SliverToBoxAdapter _bestSellerSliver() {
+    return SliverToBoxAdapter(
+      child: Column(
+        children: [
+          const SizedBox(
+            height: 30,
+          ),
+          Text(
+            ' BestSeller ',
+            style: GoogleFonts.mulish(
+              fontSize: 20,
+              fontStyle: FontStyle.normal,
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          AsyncWidget<List<CategoryItem>>(
+              fetchData: CategoryRepository().invoke,
+              loadingWidget: const SizedBox(
+                  child: Center(
+                child: CircularProgressIndicator(),
+              )),
+              errorWidget: (String error) {
+                return Center(
+                  child: Text(error),
+                );
+              },
+              successData: (List<CategoryItem> data) {
+                if (data.isEmpty) {
+                  return const Center(
+                    child: Text('No data found'),
+                  );
+                }
+                return LayoutBuilder(builder: (context, constraints) {
+                  return GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: constraints.maxWidth > 600 ? 4 : 2,
+                      // Adjust the number of columns based on screen width
+                      childAspectRatio: constraints.maxWidth > 600 ? 1 : 1,
+                      mainAxisSpacing: 10,
+                    ),
+                    itemCount: 8,
+                    itemBuilder: (BuildContext context, int index) {
+                      return InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (ctx) =>
+                                  CategoryScreen(categoryItem: data[index]),
+                            ),
+                          );
+                        },
+                        child: Hero(
+                            tag: 'BestSeller-${data[index].name}',
+                            child: BestSellerWidget(
+                              imagePath: data[index].imagePath,
                               onTap: () {},
                             )),
                       );
@@ -250,62 +373,21 @@ class HomeScreen extends StatelessWidget {
     ]));
   }
 
-  SliverToBoxAdapter _trendingItem(BuildContext context) {
+  SliverToBoxAdapter _aboutSliver() {
     return SliverToBoxAdapter(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          const SizedBox(
-            height: 10,
-          ),
-          Text(
-            "Trending",
-            style: GoogleFonts.mulish(
-                color: Colors.black, fontSize: 23, fontWeight: FontWeight.w600),
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-        ],
-      ),
-    );
-  }
-
-  _trendingItemsGrid(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.9,
-          child: GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: MediaQuery.of(context).size.width < 600
-                ? bagItems.length - 1
-                : bagItems.length,
-            // Number of grid items
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              childAspectRatio:
-                  MediaQuery.of(context).size.width > 1100 ? 0.9 : 0.85,
-              crossAxisCount: context.getResponsiveColumnCount(),
-              mainAxisSpacing: 0,
-              crossAxisSpacing: 0,
-            ),
-            itemBuilder: (BuildContext context, int index) {
-              return InkWell(
-                child: Hero(
-                    tag: 'DetailsScreen:${bagItems[index].name}',
-                    child: ProductCard(
-                      bagItem: bagItems[index],
-                    )),
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (ctx) => DetailsScreen(
-                      bagItem: bagItems[index],
-                    ),
-                  ));
-                },
+        child: AsyncWidget<AboutDetail>(
+            fetchData: AboutRepository().invoke,
+            loadingWidget: const SizedBox(
+                child: Center(
+              child: CircularProgressIndicator(),
+            )),
+            errorWidget: (String error) {
+              return Center(
+                child: Text(error),
               );
             },
-          )),
-    );
+            successData: (AboutDetail data) {
+              return AboutPage(aboutDetail: data);
+            }));
   }
 }

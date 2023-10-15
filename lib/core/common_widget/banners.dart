@@ -2,10 +2,12 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flexing/core/utils/PlatformUtils.dart';
 import 'package:flutter/material.dart';
 
-import '../../data/local/data.dart';
-
 class Banners extends StatelessWidget {
-  const Banners({super.key});
+  final List<String> bannerImages;
+  final bool showMargin;
+
+  const Banners(
+      {super.key, required this.bannerImages, this.showMargin = false});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +16,7 @@ class Banners extends StatelessWidget {
     return CarouselSlider(
       options: CarouselOptions(
         height: isAndroid(context) ? 500 : null,
-        autoPlay: true,
+        autoPlay: false,
         disableCenter: true,
         enlargeCenterPage: true,
         autoPlayInterval: const Duration(seconds: 3),
@@ -27,12 +29,16 @@ class Banners extends StatelessWidget {
           // Handle page change if needed
         },
       ),
-      items: images.map((image) {
+      items: bannerImages.map((image) {
         return Container(
+            margin: showMargin
+                ? const EdgeInsets.all(20.0)
+                : const EdgeInsets.all(0.0),
             decoration: BoxDecoration(
-          color: Colors.white,
-          image: DecorationImage(image: AssetImage(image), fit: BoxFit.cover),
-        ));
+              color: Colors.white,
+              image: DecorationImage(
+                  image: NetworkImage(image), fit: BoxFit.cover),
+            ));
       }).toList(),
     );
   }
